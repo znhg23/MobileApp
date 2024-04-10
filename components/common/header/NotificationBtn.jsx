@@ -1,16 +1,16 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 
 import styles from "./screenheader.style";
 
-const ScreenHeaderBtn = () => {
+const NotificationBtn = () => {
   return (
     <View style={styles.btnContainer}>
       <Image
-        source={require("../../../assets/icons/screen-header.png")}
+        source={require("../../../assets/icons/bell.png")}
         style={{
-          width: 21,
-          height: 22,
+          width: 24,
+          height: 24,
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -19,4 +19,4 @@ const ScreenHeaderBtn = () => {
   );
 };
 
-export default ScreenHeaderBtn;
+export default NotificationBtn;
