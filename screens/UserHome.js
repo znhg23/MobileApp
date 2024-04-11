@@ -7,14 +7,29 @@ import {
   Image,
   TextInput,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  useFonts,
+  IBMPlexSans_300Light,
+  IBMPlexSans_400Regular,
+  IBMPlexSans_500Medium,
+  IBMPlexSans_600SemiBold,
+  IBMPlexSans_700Bold,
+} from "@expo-google-fonts/ibm-plex-sans";
+
 import MainFeature from "../components/common/MainFeature";
 const UserHome = () => {
+  let [fontsLoaded, fontError] = useFonts({
+    IBMPlexSans_300Light,
+    IBMPlexSans_400Regular,
+    IBMPlexSans_500Medium,
+    IBMPlexSans_600SemiBold,
+    IBMPlexSans_700Bold,
+  });
   return (
     <View style={styles.container}>
       <View
         style={{
-          flex: 1,
+          flex: 0.9,
           justifyContent: "center",
           alignItems: "flex-start",
         }}
@@ -39,8 +54,8 @@ const UserHome = () => {
           style={{
             flex: 1,
             margin: 16,
-            justifyContent: "flex_start",
-            rowGap: 10,
+            justifyContent: "space-between",
+            rowGap: 8,
           }}
         >
           <Text style={styles.todayText}>Today</Text>
@@ -65,12 +80,20 @@ const UserHome = () => {
         >
           <View style={styles.feature}>
             <MainFeature
-              icon={require("../assets/icons/google.png")}
-              feature="Food"
-              info="Order your food now!"
+              icon={require("../assets/icons/attendance-track.png")}
+              feature={"Attendance Track"}
+              info={"More information"}
+              isAttendanceTrack={true}
             />
           </View>
-          <View style={{ flex: 1, backgroundColor: "red" }}></View>
+          <View style={styles.feature}>
+            <MainFeature
+              icon={require("../assets/icons/dashboard.png")}
+              feature={"Dashboard"}
+              info={"More information"}
+              isAttendanceTrack={false}
+            />
+          </View>
         </View>
         <View
           style={{
@@ -80,8 +103,22 @@ const UserHome = () => {
             columnGap: 15,
           }}
         >
-          <View style={styles.feature}></View>
-          <View style={{ flex: 1, backgroundColor: "red" }}></View>
+          <View style={styles.feature}>
+            <MainFeature
+              icon={require("../assets/icons/otp-request.png")}
+              feature={"OTP Request"}
+              info={"More information"}
+              isAttendanceTrack={false}
+            />
+          </View>
+          <View style={styles.feature}>
+            <MainFeature
+              icon={require("../assets/icons/report.png")}
+              feature={"Report"}
+              info={"Contact manager"}
+              isAttendanceTrack={false}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -116,39 +153,38 @@ const styles = StyleSheet.create({
   },
   featuresContainer: {
     flex: 4.5,
-    backgroundColor: "blue",
     rowGap: 15,
   },
-  feature: { flex: 1, backgroundColor: "yellow" },
+  feature: { flex: 1 },
 
   welcomeText: {
     fontSize: 26,
-    fontWeight: "bold",
+    fontFamily: "IBMPlexSans_700Bold",
     color: "#0E305D",
   },
   secondWelcomeText: {
     fontSize: 18,
-    fontWeight: "normal",
+    fontFamily: "IBMPlexSans_400Regular",
     color: "#94A3B8",
   },
   generalInfoText: {
     fontSize: 17,
-    fontWeight: "normal",
+    fontFamily: "IBMPlexSans_400Regular",
     color: "#0E305D",
   },
   todayText: {
-    fontSize: 20,
-    fontWeight: "600",
+    fontSize: 22,
+    fontFamily: "IBMPlexSans_600SemiBold",
     color: "#0E305D",
   },
   timeText: {
-    fontSize: 32,
-    fontWeight: "600",
+    fontSize: 34,
+    fontFamily: "IBMPlexSans_600SemiBold",
     color: "#0E305D",
   },
   dateText: {
     fontSize: 14,
-    fontWeight: "normal",
+    fontFamily: "IBMPlexSans_400Regular",
     color: "#94A3B8",
   },
 });
