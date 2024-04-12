@@ -3,9 +3,9 @@ import { ScreenHeaderBtn, NotificationBtn } from "../components";
 export default function Layout() {
   return (
     <Stack
-      screenOptions={{
-        headerTitleAlign: "center",
+      screenOptions={() => ({
         title: "Home",
+        headerTitleAlign: "center",
         headerStyle: {
           backgroundColor: "white",
         },
@@ -17,9 +17,9 @@ export default function Layout() {
           fontSize: 20,
           fontWeight: "normal",
         },
-      }}
+      })}
     >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" />
     </Stack>
   );
 }

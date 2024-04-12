@@ -25,11 +25,14 @@ const UserHome = () => {
     IBMPlexSans_600SemiBold,
     IBMPlexSans_700Bold,
   });
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   return (
     <View style={styles.container}>
       <View
         style={{
-          flex: 0.9,
+          flex: 0.85,
           justifyContent: "center",
           alignItems: "flex-start",
         }}
@@ -154,6 +157,7 @@ const styles = StyleSheet.create({
   featuresContainer: {
     flex: 4.5,
     rowGap: 15,
+    marginBottom: 16,
   },
   feature: { flex: 1 },
 

@@ -1,31 +1,96 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { Image } from "react-native";
+import { Image, Text, View } from "react-native";
+import {
+  useFonts,
+  IBMPlexSans_500Medium,
+} from "@expo-google-fonts/ibm-plex-sans";
 
 export default function TabLayout() {
+  let [fontsLoaded, fontError] = useFonts({
+    IBMPlexSans_500Medium,
+  });
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
+    <Tabs>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: "Home",
-          tabBarIcon: () => (
-            <Image
-              source={require("../../assets/icons/home.png")}
-              style={{ width: 20, height: 20 }}
-            />
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            height: 60,
+          },
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Image
+                source={require("../../assets/icons/home.png")}
+                style={{ width: 25, height: 25 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "IBMPlexSans_500Medium",
+                  fontSize: 13,
+                  color: focused ? "#0E305D" : "#94A3B8",
+                }}
+              >
+                Home
+              </Text>
+            </View>
           ),
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="control-panel"
         options={{
-          title: "Settings",
-          tabBarIcon: () => (
-            <Image
-              source={require("../../assets/icons/home.png")}
-              style={{ width: 20, height: 20 }}
-            />
+          tabBarShowLabel: false,
+          tabBarStyle: { height: 60 },
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Image
+                source={require("../../assets/icons/control-panel.png")}
+                style={{ width: 25, height: 25 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "IBMPlexSans_500Medium",
+                  fontSize: 13,
+                  color: focused ? "#0E305D" : "#94A3B8",
+                }}
+              >
+                Control Panel
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            height: 60,
+          },
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Image
+                source={require("../../assets/icons/profile.png")}
+                style={{ width: 25, height: 25 }}
+              />
+              <Text
+                style={{
+                  fontFamily: "IBMPlexSans_500Medium",
+                  fontSize: 13,
+                  color: focused ? "#0E305D" : "#94A3B8",
+                }}
+              >
+                Profile
+              </Text>
+            </View>
           ),
         }}
       />
