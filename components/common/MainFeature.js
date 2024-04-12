@@ -8,8 +8,9 @@ import {
   IBMPlexSans_600SemiBold,
   IBMPlexSans_700Bold,
 } from "@expo-google-fonts/ibm-plex-sans";
+import { router } from "expo-router";
 
-const MainFeature = ({ icon, feature, info, isAttendanceTrack }) => {
+const MainFeature = ({ icon, feature, info, isAttendanceTrack, dest }) => {
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
     IBMPlexSans_400Regular,
@@ -28,6 +29,9 @@ const MainFeature = ({ icon, feature, info, isAttendanceTrack }) => {
           ? [styles.featureContainer, { backgroundColor: "#0E305D" }]
           : styles.featureContainer
       }
+      onPress={() => {
+        router.push(dest);
+      }}
     >
       <View
         style={{

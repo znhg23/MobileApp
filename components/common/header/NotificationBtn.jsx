@@ -5,7 +5,12 @@ import styles from "./screenheader.style";
 
 const NotificationBtn = () => {
   return (
-    <View style={[styles.btnContainer, { justifyContent: "flex-end" }]}>
+    <View
+      style={[
+        styles.btnContainer,
+        { justifyContent: "flex-end", marginRight: 16 },
+      ]}
+    >
       <Image
         source={require("../../../assets/icons/bell.png")}
         style={{
