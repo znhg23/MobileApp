@@ -3,20 +3,22 @@ import React, { useState } from "react";
 import { Stack } from "expo-router";
 import ScreenHeaderBtn from "../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../components/common/header/NotificationBtn";
-import DateSwiper from "../components/common/DateSwiper";
 
-export default function Track() {
-  const [selectedDate, setSelectedDate] = useState({
-    day: 1,
-    dayOfWeek: "Sun",
-  });
+const Track = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    // Do something with the selected date
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate);
   };
+  console.log("track");
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Stack.Screen
         options={{
           title: "Attendance track",
@@ -34,12 +36,8 @@ export default function Track() {
           },
         }}
       />
-      <Text style={{ fontSize: 24 }}>
-        Selected Date: {selectedDate.day} {selectedDate.dayOfWeek}
-      </Text>
-      <DateSwiper initialDate={selectedDate} onDateChange={handleDateChange} />
     </View>
   );
-}
-
+};
+export default Track;
 const styles = StyleSheet.create({});
