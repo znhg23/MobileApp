@@ -8,6 +8,7 @@ export default function Layout() {
       <Stack.Screen name="dashboard" />
       <Stack.Screen name="report" />
       <Stack.Screen name="otp-request" />
+      <Stack.Screen name="employee-details" />
     </Stack>
   );
 }

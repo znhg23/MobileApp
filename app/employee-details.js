@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { View, Text } from "react-native";
+import React from "react";
 import { Stack } from "expo-router";
 import ScreenHeaderBtn from "../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../components/common/header/NotificationBtn";
 import AttendanceList from "../components/common/AttendanceList";
 
-const Track = () => {
-  console.log("track");
+const EmployeeDetails = () => {
   return (
     <View
       style={{
@@ -18,7 +17,7 @@ const Track = () => {
     >
       <Stack.Screen
         options={{
-          title: "Attendance Track",
+          title: "Empoyee Details",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "white",
@@ -33,8 +32,9 @@ const Track = () => {
           },
         }}
       />
+      <AttendanceList />
     </View>
   );
 };
-export default Track;
-const styles = StyleSheet.create({});
+
+export default EmployeeDetails;
