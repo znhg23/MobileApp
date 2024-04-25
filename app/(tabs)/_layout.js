@@ -1,6 +1,8 @@
 import React from "react";
-import { Tabs } from "expo-router";
+import { Tabs, Stack } from "expo-router";
 import { Image, Text, View } from "react-native";
+import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
+import NotificationBtn from "../../components/common/header/NotificationBtn";
 import {
   useFonts,
   IBMPlexSans_500Medium,
@@ -22,7 +24,7 @@ export default function TabLayout() {
           tabBarStyle: {
             height: 60,
           },
-          headerShown: false,
+          headerShown: true,
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Image
@@ -47,7 +49,7 @@ export default function TabLayout() {
         options={{
           tabBarShowLabel: false,
           tabBarStyle: { height: 60 },
-          headerShown: false,
+          headerShown: true,
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Image
@@ -74,7 +76,7 @@ export default function TabLayout() {
           tabBarStyle: {
             height: 60,
           },
-          headerShown: false,
+          headerShown: true,
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Image
