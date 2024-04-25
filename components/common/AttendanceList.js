@@ -118,8 +118,12 @@ const AttendanceList = () => {
               <Text style={styles.dateText}>{item.date}</Text>
               <Text style={styles.weekDayText}>{item.weekDay}</Text>
             </View>
-            <Text style={styles.timeText}>{item.checkin}</Text>
-            <Text style={styles.timeText}>{item.checkout}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.timeText}>{item.checkin}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.timeText}>{item.checkout}</Text>
+            </View>
             <Text style={[styles.timeText, { flex: 0.7 }]}>
               {item.totalHours}
             </Text>
@@ -133,8 +137,12 @@ const AttendanceList = () => {
           {item.expandContent.map((descItem, key) => (
             <View key={key} style={styles.expandItem}>
               <View style={[styles.dateBox, { backgroundColor: "white" }]} />
-              <Text style={styles.timeText}>{descItem.time}</Text>
-              <Text style={styles.timeText}>{descItem.action}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.timeText}>{descItem.time}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.timeText}>{descItem.action}</Text>
+              </View>
               {["Late in", "Early leave"].includes(descItem.status) ? (
                 <View style={styles.redStatus}>
                   <Text style={[styles.statusText, { color: "#ED2115" }]}>
@@ -207,7 +215,6 @@ const styles = StyleSheet.create({
     color: "black",
   },
   timeText: {
-    flex: 1,
     textAlign: "center",
     fontFamily: "IBMPlexSans_400Regular",
     fontSize: 14,

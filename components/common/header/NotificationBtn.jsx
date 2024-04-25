@@ -3,7 +3,14 @@ import { View, Image } from "react-native";
 
 import styles from "./screenheader.style";
 
-const NotificationBtn = () => {
+const NotificationBtn = ({ mode }) => {
+  let source;
+  if (mode === "dark") {
+    source = require("../../../assets/icons/white-bell.png");
+  } else {
+    source = require("../../../assets/icons/bell.png");
+  }
+
   return (
     <View
       style={[
@@ -12,7 +19,7 @@ const NotificationBtn = () => {
       ]}
     >
       <Image
-        source={require("../../../assets/icons/bell.png")}
+        source={source}
         style={{
           width: 24,
           height: 24,
