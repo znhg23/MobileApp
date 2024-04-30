@@ -3,7 +3,7 @@ import { View, Image } from "react-native";
 
 import styles from "./screenheader.style";
 
-const NotificationBtn = ({ mode }) => {
+const NotificationBtn = ({ mode, isTabStack }) => {
   let source;
   if (mode === "dark") {
     source = require("../../../assets/icons/white-bell.png");
@@ -15,7 +15,8 @@ const NotificationBtn = ({ mode }) => {
     <View
       style={[
         styles.btnContainer,
-        { justifyContent: "flex-end", marginRight: 16 },
+        { justifyContent: "flex-end" },
+        isTabStack ? { marginRight: 16 } : { marginRight: 0 },
       ]}
     >
       <Image

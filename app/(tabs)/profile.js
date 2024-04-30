@@ -48,8 +48,8 @@ export default function Profile() {
             backgroundColor: "#0E305D",
           },
           headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn mode="dark" />,
-          headerRight: () => <NotificationBtn mode="dark" />,
+          headerLeft: () => <ScreenHeaderBtn mode="dark" isTabStack={true} />,
+          headerRight: () => <NotificationBtn mode="dark" isTabStack={true} />,
           headerTitleStyle: {
             color: "white",
             fontSize: 20,

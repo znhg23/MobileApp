@@ -34,8 +34,8 @@ const UserHome = () => {
             backgroundColor: "white",
           },
           headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn />,
-          headerRight: () => <NotificationBtn />,
+          headerLeft: () => <ScreenHeaderBtn isTabStack={true} />,
+          headerRight: () => <NotificationBtn isTabStack={true} />,
           headerTitleStyle: {
             color: "#0E305D",
             fontSize: 20,

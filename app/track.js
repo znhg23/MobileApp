@@ -1,6 +1,14 @@
-import { StyleSheet, Text, View, Image, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import { router } from "expo-router";
 import React, { useState } from "react";
-import { Stack } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import ScreenHeaderBtn from "../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../components/common/header/NotificationBtn";
 import AttendanceList from "../components/common/AttendanceList";
@@ -179,18 +187,28 @@ const Track = () => {
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
             <Text style={[{ flex: 1 }, styles.otherText]}>{item.position}</Text>
-            <Image
-              source={require("../assets/icons/more-info.png")}
-              style={{
-                height: 18,
-                width: 18,
+            <TouchableOpacity
+              onPress={() => {
+                router.push({
+                  pathname: "/attendance-details/[id]",
+                  params: { id: item.index },
+                });
               }}
-            />
+            >
+              <Image
+                source={require("../assets/icons/more-info.png")}
+                style={{
+                  height: 18,
+                  width: 18,
+                }}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
     );
   };
+
   return (
     <View
       style={{
@@ -250,6 +268,7 @@ const Track = () => {
           renderItem={({ item }) => <GeneralAttendance item={item} />}
           eyExtractor={(item) => item.id.toString()}
           style={{ width: "100%", flex: 1 }}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </View>
