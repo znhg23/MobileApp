@@ -8,6 +8,9 @@
       "expo-router"
     ],
     "name": "MobileApp",
-    "slug": "MobileApp"
+    "slug": "MobileApp",
+    "android": {
+      "package": "com.anonymous.MobileApp"
+    }
   }
 }
