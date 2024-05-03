@@ -5,11 +5,12 @@ import {
   Image,
   Dimensions,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { Stack } from "expo-router";
-import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../../components/common/header/NotificationBtn";
-import AttendanceList from "../../components/common/AttendanceList";
+import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
+import NotificationBtn from "../../../components/common/header/NotificationBtn";
+import AttendanceList from "../../../components/common/AttendanceList";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -28,7 +29,12 @@ export default function Profile() {
   });
 
   if (!fontsLoaded && !fontError) {
-    return null;
+    return (
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+        <ActivityIndicator size="large" color="#94A3B8" />
+      </>
+    );
   }
   return (
     <View
@@ -48,8 +54,8 @@ export default function Profile() {
             backgroundColor: "#0E305D",
           },
           headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn mode="dark" />,
-          headerRight: () => <NotificationBtn mode="dark" />,
+          headerLeft: () => <ScreenHeaderBtn mode="dark" isTabStack={true} />,
+          headerRight: () => <NotificationBtn mode="dark" isTabStack={true} />,
           headerTitleStyle: {
             color: "white",
             fontSize: 20,
@@ -76,7 +82,7 @@ export default function Profile() {
           </View>
           <View style={styles.rightInfo}>
             <Image
-              source={require("../../assets/icons/edit.png")}
+              source={require("../../../assets/icons/edit.png")}
               style={{ height: 31, width: 31 }}
             />
           </View>
@@ -97,7 +103,7 @@ export default function Profile() {
           >
             <View style={[styles.dayInfo, { justifyContent: "flex-start" }]}>
               <Image
-                source={require("../../assets/icons/verified.png")}
+                source={require("../../../assets/icons/verified.png")}
                 style={{ width: 36, height: 36 }}
               />
               <View
@@ -121,7 +127,7 @@ export default function Profile() {
 
             <View style={[styles.dayInfo, { justifyContent: "flex-end" }]}>
               <Image
-                source={require("../../assets/icons/yellow-flag.png")}
+                source={require("../../../assets/icons/yellow-flag.png")}
                 style={{ width: 36, height: 36 }}
               />
               <View
@@ -169,7 +175,7 @@ export default function Profile() {
       </View>
 
       <Image
-        source={require("../../assets/icons/avatar.png")}
+        source={require("../../../assets/icons/avatar.png")}
         style={styles.avatar}
       />
     </View>

@@ -1,8 +1,8 @@
 import React from "react";
 import { Tabs, Stack } from "expo-router";
 import { Image, Text, View } from "react-native";
-import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../../components/common/header/NotificationBtn";
+import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
+import NotificationBtn from "../../../components/common/header/NotificationBtn";
 import {
   useFonts,
   IBMPlexSans_500Medium,
@@ -28,7 +28,7 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Image
-                source={require("../../assets/icons/home.png")}
+                source={require("../../../assets/icons/home.png")}
                 style={{ width: 25, height: 25 }}
               />
               <Text
@@ -53,7 +53,7 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Image
-                source={require("../../assets/icons/control-panel.png")}
+                source={require("../../../assets/icons/control-panel.png")}
                 style={{ width: 25, height: 25 }}
               />
               <Text
@@ -80,7 +80,7 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Image
-                source={require("../../assets/icons/profile.png")}
+                source={require("../../../assets/icons/profile.png")}
                 style={{ width: 25, height: 25 }}
               />
               <Text

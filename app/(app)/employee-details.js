@@ -1,9 +1,9 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
-import ScreenHeaderBtn from "../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../components/common/header/NotificationBtn";
-import AttendanceList from "../components/common/AttendanceList";
+import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
+import NotificationBtn from "../../components/common/header/NotificationBtn";
+import AttendanceList from "../../components/common/AttendanceList";
 
 const EmployeeDetails = () => {
   return (

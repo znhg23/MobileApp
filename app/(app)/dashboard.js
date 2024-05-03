@@ -12,10 +12,10 @@ import {
 import React, { useState, useRef } from "react";
 import { Stack } from "expo-router";
 import moment from 'moment';
-import { Color, FontFamily, Border, FontSize } from "../constants/GlobalStyles";
-import ScreenHeaderBtn from "../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../components/common/header/NotificationBtn";
-import DateSwiper from "../components/common/DateSwiper";
+import { Color, FontFamily, Border, FontSize } from "../../constants/GlobalStyles";
+import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
+import NotificationBtn from "../../components/common/header/NotificationBtn";
+import DateSwiper from "../../components/common/DateSwiper";
 import DatePicker from "react-native-modern-datepicker"; 
 
 
@@ -72,7 +72,7 @@ const Dashboard = () => {
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.dateContainer}>
           <TouchableOpacity onPress={handleOnPress}>
-            <Image source={require("../assets/icons/calendar.png")} style={{width: 20, height: 20, marginRight: 10, marginBottom: 12}}/>
+            <Image source={require("../../assets/icons/calendar.png")} style={{width: 20, height: 20, marginRight: 10, marginBottom: 12}}/>
           </TouchableOpacity>
           <Modal 
             animationType='slide'
@@ -102,7 +102,7 @@ const Dashboard = () => {
           {/* Change the content to an API statistics instead of a fixed image */}
           <Text style={styles.statTitle}>Avg Work Hour</Text>
           <View style={styles.statGraph}>
-            <Image source={require("../assets/icons/statistics.png")} style={{width: 225, height: 225}}/>
+            <Image source={require("../../assets/icons/statistics.png")} style={{width: 225, height: 225}}/>
             <View style={styles.hourText}>
               <Text style={styles.statTextHour}>9 Hr</Text>
               <Text style={styles.statTextHour}>8 Hr</Text>

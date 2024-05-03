@@ -1,16 +1,26 @@
-import { View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useRef } from "react";
 import { Stack } from "expo-router";
 import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../../components/common/header/NotificationBtn";
-export default function ControlPanel() {
+import DateSwiper from "../../components/common/DateSwiper";
+
+const OtpRequest = () => {
   return (
-    <View style={{ justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+      }}
+    >
       <Stack.Screen
         options={{
-          title: "Control Panel",
+          title: "Feedback",
           headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: "white",
+            backgroundColor: "#94A3B8",
           },
           headerShadowVisible: false,
           headerLeft: () => <ScreenHeaderBtn />,
@@ -22,7 +32,10 @@ export default function ControlPanel() {
           },
         }}
       />
-      <Text>Control Panel</Text>
+      <DateSwiper
+      />
     </View>
   );
-}
+};
+
+export default OtpRequest;
