@@ -11,6 +11,9 @@
     },
     "plugins": ["expo-router", "expo-secure-store"],
     "name": "MobileApp",
-    "slug": "MobileApp"
+    "slug": "MobileApp",
+    "android": {
+      "package": "com.anonymous.MobileApp"
+    }
   }
 }
