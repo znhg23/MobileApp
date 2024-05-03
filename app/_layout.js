@@ -1,15 +1,10 @@
-import { Stack } from "expo-router";
+import { Slot } from "expo-router";
+import { AuthProvider } from "../components/AuthContext";
 
-export default function Layout() {
+export default function Root() {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="track" />
-      <Stack.Screen name="dashboard" />
-      <Stack.Screen name="report" />
-      <Stack.Screen name="otp-request" />
-      <Stack.Screen name="employee-details" />
-      <Stack.Screen name="attendance-details/[id]" />
-    </Stack>
+    <AuthProvider>
+      <Slot />
+    </AuthProvider>
   );
 }

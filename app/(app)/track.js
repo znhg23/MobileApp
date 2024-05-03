@@ -5,13 +5,14 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Stack, Tabs } from "expo-router";
-import ScreenHeaderBtn from "../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../components/common/header/NotificationBtn";
-import AttendanceList from "../components/common/AttendanceList";
+import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
+import NotificationBtn from "../../components/common/header/NotificationBtn";
+import AttendanceList from "../../components/common/AttendanceList";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -112,10 +113,17 @@ const Track = () => {
     IBMPlexSans_600SemiBold,
     IBMPlexSans_700Bold,
   });
+  const [loading, setLoading] = useState(true);
 
   if (!fontsLoaded && !fontError) {
-    return null;
+    return (
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+        <ActivityIndicator size="large" color="#94A3B8" />
+      </>
+    );
   }
+
   const GeneralAttendance = ({ item }) => {
     return (
       <View style={styles.attendanceContainer}>
@@ -169,7 +177,7 @@ const Track = () => {
             }}
           >
             <Image
-              source={require("../assets/icons/barcode.png")}
+              source={require("../../assets/icons/barcode.png")}
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
             <Text style={styles.otherText}>{item.action}</Text>
@@ -183,7 +191,7 @@ const Track = () => {
             }}
           >
             <Image
-              source={require("../assets/icons/briefcase.png")}
+              source={require("../../assets/icons/briefcase.png")}
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
             <Text style={[{ flex: 1 }, styles.otherText]}>{item.position}</Text>
@@ -196,7 +204,7 @@ const Track = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/more-info.png")}
+                source={require("../../assets/icons/more-info.png")}
                 style={{
                   height: 18,
                   width: 18,
@@ -218,16 +226,21 @@ const Track = () => {
         backgroundColor: "white",
       }}
     >
+      {/* {loading ? ( // Show activity indicator while loading
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <> */}
       <Stack.Screen
         options={{
+          headerShown: true,
           title: "Attendance Track",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "#E5EFFF",
           },
           headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn />,
-          headerRight: () => <NotificationBtn />,
+          // headerLeft: () => <ScreenHeaderBtn />,
+          // headerRight: () => <NotificationBtn />,
           headerTitleStyle: {
             color: "#0E305D",
             fontSize: 20,
@@ -235,6 +248,7 @@ const Track = () => {
           },
         }}
       />
+
       <View style={styles.topContainer}></View>
       <View style={styles.bottomContainer}>
         <View style={styles.generalContainer}>
@@ -242,21 +256,21 @@ const Track = () => {
           <View style={styles.toolBar}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
-                source={require("../assets/icons/sort.png")}
+                source={require("../../assets/icons/sort.png")}
                 style={{ width: 22, height: 19 }}
               />
               <Text style={styles.toolBarText}>Sort</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
-                source={require("../assets/icons/filter.png")}
+                source={require("../../assets/icons/filter.png")}
                 style={{ width: 24, height: 24 }}
               />
               <Text style={styles.toolBarText}>Filter</Text>
             </View>
             <View style={styles.search}>
               <Image
-                source={require("../assets/icons/search.png")}
+                source={require("../../assets/icons/search.png")}
                 style={{ width: 16, height: 16 }}
               />
               <Text style={styles.searchText}>Search</Text>
@@ -271,6 +285,8 @@ const Track = () => {
           showsVerticalScrollIndicator={false}
         />
       </View>
+      {/* </>
+      )} */}
     </View>
   );
 };

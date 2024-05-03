@@ -1,26 +1,17 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
-import ScreenHeaderBtn from "../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../components/common/header/NotificationBtn";
-import AttendanceList from "../components/common/AttendanceList";
-
-const EmployeeDetails = () => {
+import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
+import NotificationBtn from "../../components/common/header/NotificationBtn";
+const Dashboard = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-      }}
-    >
+    <View>
       <Stack.Screen
         options={{
-          title: "Empoyee Details",
+          title: "Dashboard",
           headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: "white",
+            backgroundColor: "#E5EFFF",
           },
           headerShadowVisible: false,
           headerLeft: () => <ScreenHeaderBtn />,
@@ -32,9 +23,9 @@ const EmployeeDetails = () => {
           },
         }}
       />
-      <AttendanceList />
+      <Text>Dashboard</Text>
     </View>
   );
 };
 
-export default EmployeeDetails;
+export default Dashboard;

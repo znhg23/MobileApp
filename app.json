@@ -4,9 +4,12 @@
     "web": {
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "ios": {
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "plugins": ["expo-router", "expo-secure-store"],
     "name": "MobileApp",
     "slug": "MobileApp"
   }

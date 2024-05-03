@@ -6,11 +6,13 @@ import {
   Dimensions,
   Image,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
-import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../../components/common/header/NotificationBtn";
+import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
+import NotificationBtn from "../../../components/common/header/NotificationBtn";
+
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -125,7 +127,12 @@ const AttendanceDetails = () => {
   });
 
   if (!fontsLoaded && !fontError) {
-    return null;
+    return (
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+        <ActivityIndicator size="large" color="#94A3B8" />
+      </>
+    );
   }
   const attendanceData = data[id];
   return (
@@ -139,14 +146,13 @@ const AttendanceDetails = () => {
     >
       <Stack.Screen
         options={{
+          headerShown: true,
           title: "Attendance Details",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "#E5EFFF",
           },
           headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn />,
-          headerRight: () => <NotificationBtn />,
           headerTitleStyle: {
             color: "#0E305D",
             fontSize: 20,
@@ -165,17 +171,17 @@ const AttendanceDetails = () => {
           }}
         >
           <Image
-            source={require("../../assets/icons/trash.png")}
+            source={require("../../../assets/icons/trash.png")}
             style={{ width: 28, height: 28 }}
           />
           <View style={styles.scan}>
             <Image
-              source={require("../../assets/icons/scan-avatar.png")}
+              source={require("../../../assets/icons/scan-avatar.png")}
               style={{ width: 123, height: 123 }}
             />
           </View>
           <Image
-            source={require("../../assets/icons/edit.png")}
+            source={require("../../../assets/icons/edit.png")}
             style={{ width: 28, height: 28 }}
           />
         </View>
@@ -206,7 +212,7 @@ const AttendanceDetails = () => {
             }}
           >
             <Image
-              source={require("../../assets/icons/bold-clock.png")}
+              source={require("../../../assets/icons/bold-clock.png")}
               style={{ width: 28, height: 28, marginTop: 6, marginRight: 13 }}
             />
             <Text style={styles.timeText}>{attendanceData.time}</Text>
@@ -223,7 +229,7 @@ const AttendanceDetails = () => {
           <Text style={styles.dateText}>{attendanceData.date}</Text>
         </View>
         <Image
-          source={require("../../assets/icons/scan-frame.png")}
+          source={require("../../../assets/icons/scan-frame.png")}
           style={styles.scanFrame}
         />
       </View>
@@ -231,7 +237,7 @@ const AttendanceDetails = () => {
         <View style={styles.infoBox}>
           <View style={styles.iconBox}>
             <Image
-              source={require("../../assets/icons/user.png")}
+              source={require("../../../assets/icons/user.png")}
               style={{ width: 33, height: 33 }}
             />
           </View>
@@ -246,7 +252,7 @@ const AttendanceDetails = () => {
             {attendanceData.employeeName}
           </Text>
           <Image
-            source={require("../../assets/icons/left-arrow.png")}
+            source={require("../../../assets/icons/left-arrow.png")}
             style={{ width: 17, height: 22 }}
           />
         </View>
@@ -254,7 +260,7 @@ const AttendanceDetails = () => {
         <View style={styles.infoBox}>
           <View style={styles.iconBox}>
             <Image
-              source={require("../../assets/icons/white-briefcase.png")}
+              source={require("../../../assets/icons/white-briefcase.png")}
               style={{ width: 33, height: 33 }}
             />
           </View>
@@ -273,7 +279,7 @@ const AttendanceDetails = () => {
         <View style={styles.infoBox}>
           <View style={styles.iconBox}>
             <Image
-              source={require("../../assets/icons/white-barcode.png")}
+              source={require("../../../assets/icons/white-barcode.png")}
               style={{ width: 33, height: 33 }}
             />
           </View>
@@ -292,7 +298,7 @@ const AttendanceDetails = () => {
         <View style={styles.infoBox}>
           <View style={styles.iconBox}>
             <Image
-              source={require("../../assets/icons/white-camera.png")}
+              source={require("../../../assets/icons/white-camera.png")}
               style={{ width: 33, height: 33 }}
             />
           </View>
