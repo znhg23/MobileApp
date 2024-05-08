@@ -1,11 +1,11 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useRef } from "react";
 import { Stack } from "expo-router";
 import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../../components/common/header/NotificationBtn";
-import AttendanceList from "../../components/common/AttendanceList";
+import DateSwiper from "../../components/common/DateSwiper";
 
-const EmployeeDetails = () => {
+const Feedback = () => {
   return (
     <View
       style={{
@@ -17,10 +17,10 @@ const EmployeeDetails = () => {
     >
       <Stack.Screen
         options={{
-          title: "Empoyee Details",
+          title: "Feedback",
           headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: "white",
+            backgroundColor: "#94A3B8",
           },
           headerShadowVisible: false,
           headerLeft: () => <ScreenHeaderBtn />,
@@ -32,9 +32,9 @@ const EmployeeDetails = () => {
           },
         }}
       />
-      <AttendanceList />
+      <DateSwiper />
     </View>
   );
 };
 
-export default EmployeeDetails;
+export default Feedback;

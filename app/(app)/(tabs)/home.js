@@ -136,7 +136,7 @@ const UserHome = () => {
                 feature={"Employee Registration"}
                 info={"More information"}
                 isAttendanceTrack={false}
-                dest={"/otp-request"}
+                dest={"/employee-register"}
               />
             </View>
             <View style={styles.feature}>
@@ -145,7 +145,7 @@ const UserHome = () => {
                 feature={"Feedback"}
                 info={"2 pending requests"}
                 isAttendanceTrack={false}
-                dest={"/report"}
+                dest={"/feedback"}
               />
             </View>
           </View>
@@ -167,6 +167,7 @@ const UserHome = () => {
             headerLeft: () => <ScreenHeaderBtn isTabStack={true} />,
             headerRight: () => <NotificationBtn isTabStack={true} />,
             headerTitleStyle: {
+              fontFamily: "IBMPlexSans_500Medium",
               color: "#0E305D",
               fontSize: 20,
               fontWeight: "normal",

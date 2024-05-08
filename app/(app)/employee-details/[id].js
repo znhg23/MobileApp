@@ -6,16 +6,14 @@ import {
   Dimensions,
   Platform,
   ActivityIndicator,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Stack } from "expo-router";
+import { router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../../../components/common/header/NotificationBtn";
 import AttendanceList from "../../../components/common/AttendanceList";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import BASE_URL from "../../../env";
-import { router } from "expo-router";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -25,22 +23,9 @@ import {
   IBMPlexSans_700Bold,
 } from "@expo-google-fonts/ibm-plex-sans";
 
-export default Profile = () => {
-  const [profileData, setProfileData] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/user/employeeDetails`);
-        console.log(response.data);
-        setProfileData(response.data.message);
-      } catch (error) {
-        alert(error.response.data.message || "An error occurred");
-      }
-    };
-
-    fetchData();
-  }, []);
-
+export default function EmployeeDetails() {
+  const { id } = useLocalSearchParams();
+  console.log(id);
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
     IBMPlexSans_400Regular,
@@ -48,6 +33,7 @@ export default Profile = () => {
     IBMPlexSans_600SemiBold,
     IBMPlexSans_700Bold,
   });
+
   if (!fontsLoaded && !fontError) {
     return (
       <>
@@ -56,10 +42,6 @@ export default Profile = () => {
       </>
     );
   }
-  if (!profileData) return <ActivityIndicator size="large" color="#94A3B8" />;
-  const onEdit = () => {
-    router.push("change-password");
-  };
   return (
     <View
       style={{
@@ -73,14 +55,20 @@ export default Profile = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Profile",
+          title: "Employee Details",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "#0E305D",
           },
+          headerLeft: () => (
+            <TouchableWithoutFeedback onPress={() => router.back()}>
+              <Image
+                source={require("../../../assets/icons/left-white-arrow.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            </TouchableWithoutFeedback>
+          ),
           headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn mode="dark" isTabStack={true} />,
-          headerRight: () => <NotificationBtn mode="dark" isTabStack={true} />,
           headerTitleStyle: {
             fontFamily: "IBMPlexSans_500Medium",
             color: "white",
@@ -107,22 +95,16 @@ export default Profile = () => {
             </View>
           </View>
           <View style={styles.rightInfo}>
-            <TouchableOpacity onPress={onEdit}>
-              <Image
-                source={require("../../../assets/icons/change-password.png")}
-                style={{ width: 23, height: 22 }}
-              />
-            </TouchableOpacity>
+            <Image
+              source={require("../../../assets/icons/edit.png")}
+              style={{ height: 31, width: 31 }}
+            />
           </View>
         </View>
         <View style={styles.personalInfo}>
-          <Text style={styles.nameText}>{profileData.name}</Text>
-          <Text style={styles.emailText}>{profileData.email}</Text>
-          <Text style={styles.emailText}>{profileData.phone_num}</Text>
-          <Text style={styles.positionText}>
-            {profileData.position.charAt(0).toUpperCase() +
-              profileData.position.slice(1)}
-          </Text>
+          <Text style={styles.nameText}>John Doe</Text>
+          <Text style={styles.emailText}>dung.truongscy@gmail.com</Text>
+          <Text style={styles.positionText}>Staff</Text>
         </View>
         <View style={styles.generalInfo}>
           <View
@@ -145,9 +127,7 @@ export default Profile = () => {
                 }}
               >
                 <Text style={styles.dayInfoText}>Working days</Text>
-                <Text style={styles.numberDayInfoText}>
-                  {profileData.working_days}
-                </Text>
+                <Text style={styles.numberDayInfoText}>24</Text>
               </View>
             </View>
             <View
@@ -214,7 +194,7 @@ export default Profile = () => {
       />
     </View>
   );
-};
+}
 const styles = StyleSheet.create({
   bottomContainer: {
     width: "100%",
@@ -261,10 +241,10 @@ const styles = StyleSheet.create({
     fontFamily: "IBMPlexSans_400Regular",
   },
   personalInfo: {
+    height: 105,
+    paddingTop: 16,
     justifyContent: "flex-start",
-    rowGap: 2,
     alignItems: "center",
-    marginBottom: 12,
   },
   nameText: {
     fontSize: 24,

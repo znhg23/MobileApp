@@ -1,17 +1,40 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
-
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
+import { useAuth } from "../../AuthContext";
 import styles from "./screenheader.style";
 
 const ScreenHeaderBtn = ({ mode, isTabStack }) => {
+  const { authState, onLogout } = useAuth();
   let source;
   if (mode === "dark") {
-    source = require("../../../assets/icons/white-screen-header.png");
+    source = require("../../../assets/icons/white-logout.png");
   } else {
-    source = require("../../../assets/icons/screen-header.png");
+    source = require("../../../assets/icons/logout.png");
   }
+  const logout = async () => {
+    // Show confirmation modal before logging out
+    Alert.alert(
+      "Confirm logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: async () => {
+            await onLogout();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
   return (
-    <View
+    <TouchableOpacity
+      onPress={logout}
       style={[
         styles.btnContainer,
         isTabStack ? { marginLeft: 16 } : { marginLeft: 0 },
@@ -26,7 +49,7 @@ const ScreenHeaderBtn = ({ mode, isTabStack }) => {
           alignItems: "center",
         }}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

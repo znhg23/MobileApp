@@ -1,14 +1,15 @@
 import React from "react";
 import { Tabs, Stack } from "expo-router";
 import { Image, Text, View } from "react-native";
-import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../../../components/common/header/NotificationBtn";
+import { useAuth } from "../../../components/AuthContext";
+
 import {
   useFonts,
   IBMPlexSans_500Medium,
 } from "@expo-google-fonts/ibm-plex-sans";
 
 export default function TabLayout() {
+  const { authState } = useAuth();
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_500Medium,
   });
@@ -47,6 +48,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="control-panel"
         options={{
+          href: authState.role === "staff" ? null : "/control-panel",
           tabBarShowLabel: false,
           tabBarStyle: { height: 60 },
           headerShown: true,

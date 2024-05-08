@@ -12,7 +12,7 @@ import React from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../../../components/common/header/NotificationBtn";
-
+import { router } from "expo-router";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -27,6 +27,7 @@ const data = [
     index: 0,
     time: "7:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Check-in",
     position: "Staff",
     status: "On time",
@@ -36,6 +37,7 @@ const data = [
     index: 1,
     time: "8:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Check-in",
     position: "Guard",
     status: "Late in",
@@ -45,6 +47,7 @@ const data = [
     index: 2,
     time: "9:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Check-out",
     position: "Cleaner",
     status: "Early leave",
@@ -54,6 +57,7 @@ const data = [
     index: 3,
     time: "10:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Visit",
     position: "Visitor",
     status: "Other",
@@ -63,6 +67,7 @@ const data = [
     index: 4,
     time: "11:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Check-in",
     position: "Staff",
     status: "On time",
@@ -72,6 +77,7 @@ const data = [
     index: 5,
     time: "12:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Check-in",
     position: "Guard",
     status: "Late in",
@@ -81,6 +87,7 @@ const data = [
     index: 6,
     time: "13:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Check-out",
     position: "Cleaner",
     status: "Early leave",
@@ -90,6 +97,7 @@ const data = [
     index: 7,
     time: "14:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Visit",
     position: "Visitor",
     status: "Other",
@@ -100,6 +108,7 @@ const data = [
     time: "15:00:00",
     employeeName: "John Doe",
     action: "Check-in",
+    employeeID: 1,
     position: "Staff",
     status: "On time",
     date: "Tuesday, April 23, 2024",
@@ -108,6 +117,7 @@ const data = [
     index: 9,
     time: "16:00:00",
     employeeName: "John Doe",
+    employeeID: 1,
     action: "Check-in",
     position: "Guard",
     status: "Late in",
@@ -134,6 +144,13 @@ const AttendanceDetails = () => {
       </>
     );
   }
+
+  const goToProfile = (employeeID) => {
+    router.push({
+      pathname: "/employee-details/[id]",
+      params: { id: employeeID },
+    });
+  };
   const attendanceData = data[id];
   return (
     <View
@@ -154,6 +171,7 @@ const AttendanceDetails = () => {
           },
           headerShadowVisible: false,
           headerTitleStyle: {
+            fontFamily: "IBMPlexSans_500Medium",
             color: "#0E305D",
             fontSize: 20,
             fontWeight: "normal",
@@ -234,7 +252,10 @@ const AttendanceDetails = () => {
         />
       </View>
       <View style={styles.bottomContainer}>
-        <View style={styles.infoBox}>
+        <TouchableOpacity
+          style={styles.infoBox}
+          onPress={() => goToProfile(attendanceData.employeeID)}
+        >
           <View style={styles.iconBox}>
             <Image
               source={require("../../../assets/icons/user.png")}
@@ -255,7 +276,7 @@ const AttendanceDetails = () => {
             source={require("../../../assets/icons/left-arrow.png")}
             style={{ width: 17, height: 22 }}
           />
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.infoBox}>
           <View style={styles.iconBox}>

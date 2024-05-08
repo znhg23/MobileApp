@@ -113,7 +113,6 @@ const Track = () => {
     IBMPlexSans_600SemiBold,
     IBMPlexSans_700Bold,
   });
-  const [loading, setLoading] = useState(true);
 
   if (!fontsLoaded && !fontError) {
     return (
@@ -226,10 +225,6 @@ const Track = () => {
         backgroundColor: "white",
       }}
     >
-      {/* {loading ? ( // Show activity indicator while loading
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <> */}
       <Stack.Screen
         options={{
           headerShown: true,
@@ -239,9 +234,8 @@ const Track = () => {
             backgroundColor: "#E5EFFF",
           },
           headerShadowVisible: false,
-          // headerLeft: () => <ScreenHeaderBtn />,
-          // headerRight: () => <NotificationBtn />,
           headerTitleStyle: {
+            fontFamily: "IBMPlexSans_500Medium",
             color: "#0E305D",
             fontSize: 20,
             fontWeight: "normal",
@@ -285,8 +279,6 @@ const Track = () => {
           showsVerticalScrollIndicator={false}
         />
       </View>
-      {/* </>
-      )} */}
     </View>
   );
 };

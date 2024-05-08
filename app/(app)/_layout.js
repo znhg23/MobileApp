@@ -8,11 +8,15 @@ export default function Layout() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="track" />
-      <Stack.Screen name="dashboard" />
       <Stack.Screen name="report" />
       <Stack.Screen name="otp-request" />
-      <Stack.Screen name="employee-details" />
+      <Stack.Screen name="employee-details/[id]" />
       <Stack.Screen name="attendance-details/[id]" />
+      <Stack.Screen name="dashboard" />
+      <Stack.Screen name="feedback" />
+      <Stack.Screen name="employee-register" />
+      <Stack.Screen name="create-face-model" />
+      <Stack.Screen name="change-password" />
     </Stack>
   );
 }
