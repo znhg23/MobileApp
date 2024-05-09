@@ -10,6 +10,8 @@ import {
 import { router } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { Stack, Tabs } from "expo-router";
+import axios from "axios";
+import BASE_URL from "../../env";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -19,104 +21,110 @@ import {
   IBMPlexSans_700Bold,
 } from "@expo-google-fonts/ibm-plex-sans";
 
-const data = [
-  {
-    index: 0,
-    time: "7:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Staff",
-    status: "On time",
-  },
-  {
-    index: 1,
-    time: "8:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Guard",
-    status: "Late in",
-  },
-  {
-    index: 2,
-    time: "9:00:00",
-    employeeName: "John Doe",
-    action: "Check-out",
-    position: "Cleaner",
-    status: "Early leave",
-  },
-  {
-    index: 3,
-    time: "10:00:00",
-    employeeName: "John Doe",
-    action: "Visit",
-    position: "Visitor",
-    status: "Other",
-  },
-  {
-    index: 4,
-    time: "11:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Staff",
-    status: "On time",
-  },
-  {
-    index: 5,
-    time: "12:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Guard",
-    status: "Late in",
-  },
-  {
-    index: 6,
-    time: "13:00:00",
-    employeeName: "John Doe",
-    action: "Check-out",
-    position: "Cleaner",
-    status: "Early leave",
-  },
-  {
-    index: 7,
-    time: "14:00:00",
-    employeeName: "John Doe",
-    action: "Visit",
-    position: "Visitor",
-    status: "Other",
-  },
-  {
-    index: 8,
-    time: "15:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Staff",
-    status: "On time",
-  },
-  {
-    index: 9,
-    time: "16:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Guard",
-    status: "Late in",
-  },
-];
+// const data = [
+//   {
+//     index: 0,
+//     time: "7:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Staff",
+//     status: "On time",
+//   },
+//   {
+//     index: 1,
+//     time: "8:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Guard",
+//     status: "Late in",
+//   },
+//   {
+//     index: 2,
+//     time: "9:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-out",
+//     position: "Cleaner",
+//     status: "Early leave",
+//   },
+//   {
+//     index: 3,
+//     time: "10:00:00",
+//     employeeName: "John Doe",
+//     action: "Visit",
+//     position: "Visitor",
+//     status: "Other",
+//   },
+//   {
+//     index: 4,
+//     time: "11:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Staff",
+//     status: "On time",
+//   },
+//   {
+//     index: 5,
+//     time: "12:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Guard",
+//     status: "Late in",
+//   },
+//   {
+//     index: 6,
+//     time: "13:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-out",
+//     position: "Cleaner",
+//     status: "Early leave",
+//   },
+//   {
+//     index: 7,
+//     time: "14:00:00",
+//     employeeName: "John Doe",
+//     action: "Visit",
+//     position: "Visitor",
+//     status: "Other",
+//   },
+//   {
+//     index: 8,
+//     time: "15:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Staff",
+//     status: "On time",
+//   },
+//   {
+//     index: 9,
+//     time: "16:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Guard",
+//     status: "Late in",
+//   },
+// ];
 
-const Track = () => {
-  // const [data, setData] = useState([]);
+const MyTrack = () => {
+  const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`${BASE_URL}/user/attendanceTrack`);
-  //       setData(response.data.result);
-  //     } catch (error) {
-  //       alert(error.response.data.message || "An error occurred");
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await axios
+          .get(`${BASE_URL}/user/attendanceTrack`)
+          .then((res) => {
+            setData(res.data.result);
+          })
+          .catch((err) => {
+            console.log(err.response.data.message);
+          });
+      } catch (error) {
+        alert(error || "An error occurred");
+      }
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
     IBMPlexSans_400Regular,
@@ -154,11 +162,23 @@ const Track = () => {
               flexDirection: "row",
               width: "100%",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-start",
+              marginBottom: 2,
             }}
           >
-            <Text style={styles.timeText}>{item.employeeName}</Text>
-            {["Late in", "Early leave"].includes(item.status) ? (
+            <Text
+              style={[
+                styles.timeText,
+                {
+                  fontFamily: "IBMPlexSans_500Medium",
+                  width: "70%",
+                  color: "#0E305D",
+                },
+              ]}
+            >
+              {item.type}
+            </Text>
+            {["Late", "Early leave"].includes(item.status) ? (
               <View style={[styles.status, { backgroundColor: "#FFE1DF" }]}>
                 <Text style={[styles.statusText, { color: "#ED2115" }]}>
                   {item.status}
@@ -187,10 +207,12 @@ const Track = () => {
             }}
           >
             <Image
-              source={require("../../assets/icons/barcode.png")}
+              source={require("../../assets/icons/info.png")}
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
-            <Text style={styles.otherText}>{item.action}</Text>
+            <Text style={[styles.otherText, { paddingBottom: 3 }]}>
+              {item.value}
+            </Text>
           </View>
           <View
             style={{
@@ -198,29 +220,16 @@ const Track = () => {
               flexDirection: "row",
               justifyContent: "flex-start",
               alignItems: "center",
+              marginBottom: 2,
             }}
           >
             <Image
-              source={require("../../assets/icons/briefcase.png")}
+              source={require("../../assets/icons/gray-location.png")}
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
-            <Text style={[{ flex: 1 }, styles.otherText]}>{item.position}</Text>
-            <TouchableOpacity
-              onPress={() => {
-                router.push({
-                  pathname: "/attendance-details/[id]",
-                  params: { id: item.index },
-                });
-              }}
-            >
-              <Image
-                source={require("../../assets/icons/more-info.png")}
-                style={{
-                  height: 18,
-                  width: 18,
-                }}
-              />
-            </TouchableOpacity>
+            <Text style={[{ flex: 1 }, styles.otherText, { paddingBottom: 1 }]}>
+              {item.location}
+            </Text>
           </View>
         </View>
       </View>
@@ -239,7 +248,7 @@ const Track = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Attendance Track",
+          title: "My Attendance Track",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "#E5EFFF",
@@ -293,7 +302,7 @@ const Track = () => {
     </View>
   );
 };
-export default Track;
+export default MyTrack;
 const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
@@ -375,6 +384,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   status: {
+    marginTop: 3,
     height: 18,
     width: 68,
     borderRadius: 8,

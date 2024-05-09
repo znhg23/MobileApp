@@ -109,7 +109,7 @@ const UserHome = () => {
                 feature={"Attendance Track"}
                 info={"More information"}
                 isAttendanceTrack={true}
-                dest={"/track"}
+                dest={"/my-track"}
               />
             </View>
             <View style={styles.feature}>
@@ -231,7 +231,7 @@ const UserHome = () => {
                 feature={"Attendance Track"}
                 info={"More information"}
                 isAttendanceTrack={true}
-                dest={"/track"}
+                dest={"/my-track"}
               />
             </View>
             <View style={styles.feature}>
