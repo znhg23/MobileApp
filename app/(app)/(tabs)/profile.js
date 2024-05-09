@@ -57,9 +57,11 @@ export default Profile = () => {
     );
   }
   if (!profileData) return <ActivityIndicator size="large" color="#94A3B8" />;
+
   const onEdit = () => {
     router.push("change-password");
   };
+
   return (
     <View
       style={{

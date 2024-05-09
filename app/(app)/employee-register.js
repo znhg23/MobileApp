@@ -64,17 +64,14 @@ const EmployeeRegister = () => {
         );
         const employeeData = getResponse.data.message[0];
         router.push({
-          pathname: "/create-face-model",
-          params: employeeData,
+          pathname: "/create-face-model/[id]",
+          params: employeeId,
         });
       })
       .catch((error) => {
         alert(error.response.data.message);
         return;
       });
-    router.push({
-      pathname: "/create-face-model",
-    });
   };
 
   return (

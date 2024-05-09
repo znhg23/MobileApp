@@ -1,3 +1,4 @@
+global.Buffer = global.Buffer || require("buffer").Buffer;
 import {
   View,
   Text,
@@ -12,11 +13,12 @@ import {
   FlatList,
 } from "react-native";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import BASE_URL from "../../env";
+import BASE_URL from "../../../env";
+
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -27,8 +29,41 @@ import {
 } from "@expo-google-fonts/ibm-plex-sans";
 
 const CreateFaceModel = () => {
-  const [image, setImage] = useState(null);
-  //const { username, password, employeeId } = useLocalSearchParams();
+  const [image, setImage] = useState([]);
+  const { id } = useLocalSearchParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/manager/getFaceModelList/${id}`
+        );
+        for (const item of response.data.message) {
+          try {
+            const res = await axios.get(
+              `${BASE_URL}/manager/getFaceModel/?model_path=${item}`,
+              {
+                responseType: "arraybuffer",
+              }
+            );
+            const base64Image = Buffer.from(res.data, "binary").toString(
+              "base64"
+            );
+            setImage((prevImage) => [
+              ...prevImage,
+              { uri: `data:image/jpeg;base64,${base64Image}` },
+            ]);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        }
+      } catch (error) {
+        alert(error.response.data.message || "An error occurred");
+      }
+    };
+
+    fetchData();
+  }, []);
 
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
@@ -93,34 +128,29 @@ const CreateFaceModel = () => {
     }
 
     try {
-      console.log(image[0].uri);
       const formData = new FormData();
-      formData.append(`file`, {
-        uri: image[0].uri,
-        name: `image.jpg`,
-        type: "image/jpeg",
+
+      image.forEach((item, index) => {
+        formData.append("file", {
+          uri: item.uri,
+          name: `image${index}.jpg`,
+          type: "image/jpeg",
+        });
       });
-      // image.forEach((item, index) => {
-      //   formData.append(`image${index}`, {
-      //     uri: item.uri,
-      //     name: `image${index}.jpg`,
-      //     type: "image/jpeg",
-      //   });
-      // });
 
       // Make POST request using Axios
       const response = await axios
-        .patch(`${BASE_URL}/manager/updateFaceModel/1`, formData, {
+        .patch(`${BASE_URL}/manager/updateFaceModel/${id}`, formData, {
           headers: {
             Accept: "application/json",
             "Content-Type": "multipart/form-data",
           },
         })
         .catch((error) => {
-          console.log(error.response.data);
+          alert(error.response.data.message || "An error occurred");
         });
 
-      console.log("Upload successful:", response.data);
+      console.log("Upload successful:", response);
       // Handle response or update UI as needed
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -158,14 +188,14 @@ const CreateFaceModel = () => {
       <View style={styles.imagePickerContainer}>
         <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
           <Image
-            source={require("../../assets//icons/library-image.png")}
+            source={require("../../../assets//icons/library-image.png")}
             style={{ height: 50, width: 50 }}
           />
           <Text style={styles.importText}>Choose image from library</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.imagePicker} onPress={takePhoto}>
           <Image
-            source={require("../../assets//icons/camera-image.png")}
+            source={require("../../../assets//icons/camera-image.png")}
             style={{ height: 50, width: 50 }}
           />
           <Text style={styles.importText}>Take photo from camera</Text>

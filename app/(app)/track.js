@@ -10,9 +10,6 @@ import {
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Stack, Tabs } from "expo-router";
-import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../../components/common/header/NotificationBtn";
-import AttendanceList from "../../components/common/AttendanceList";
 import {
   useFonts,
   IBMPlexSans_300Light,

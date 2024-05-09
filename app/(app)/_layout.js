@@ -15,7 +15,7 @@ export default function Layout() {
       <Stack.Screen name="dashboard" />
       <Stack.Screen name="feedback" />
       <Stack.Screen name="employee-register" />
-      <Stack.Screen name="create-face-model" />
+      <Stack.Screen name="create-face-model/[id]" />
       <Stack.Screen name="change-password" />
     </Stack>
   );

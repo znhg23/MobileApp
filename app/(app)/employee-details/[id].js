@@ -7,12 +7,14 @@ import {
   Platform,
   ActivityIndicator,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import { Stack } from "expo-router";
 import { router } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
-import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../../../components/common/header/NotificationBtn";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import BASE_URL from "../../../env";
 import AttendanceList from "../../../components/common/AttendanceList";
 import {
   useFonts,
@@ -25,7 +27,22 @@ import {
 
 export default function EmployeeDetails() {
   const { id } = useLocalSearchParams();
-  console.log(id);
+  const [profileData, setProfileData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/manager/getEmployee?id=${id}`
+        );
+        console.log(response.data);
+        setProfileData(response.data.message[0]);
+      } catch (error) {
+        alert(error.response.data.message || "An error occurred");
+      }
+    };
+
+    fetchData();
+  }, []);
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
     IBMPlexSans_400Regular,
@@ -42,6 +59,15 @@ export default function EmployeeDetails() {
       </>
     );
   }
+  if (!profileData) return <ActivityIndicator size="large" color="#94A3B8" />;
+
+  const onEdit = () => {
+    router.push({
+      pathname: "/create-face-model/[id]",
+      params: { id },
+    });
+  };
+
   return (
     <View
       style={{
@@ -94,17 +120,21 @@ export default function EmployeeDetails() {
               <Text style={styles.workingTimeText}>13:00-17:00</Text>
             </View>
           </View>
-          <View style={styles.rightInfo}>
+          <TouchableOpacity onPress={onEdit} style={styles.rightInfo}>
             <Image
               source={require("../../../assets/icons/edit.png")}
               style={{ height: 31, width: 31 }}
             />
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.personalInfo}>
-          <Text style={styles.nameText}>John Doe</Text>
-          <Text style={styles.emailText}>dung.truongscy@gmail.com</Text>
-          <Text style={styles.positionText}>Staff</Text>
+          <Text style={styles.nameText}>{profileData.name}</Text>
+          <Text style={styles.emailText}>{profileData.email}</Text>
+          <Text style={styles.emailText}>{profileData.phone_num}</Text>
+          <Text style={styles.positionText}>
+            {profileData.position.charAt(0).toUpperCase() +
+              profileData.position.slice(1)}
+          </Text>
         </View>
         <View style={styles.generalInfo}>
           <View
@@ -127,7 +157,9 @@ export default function EmployeeDetails() {
                 }}
               >
                 <Text style={styles.dayInfoText}>Working days</Text>
-                <Text style={styles.numberDayInfoText}>24</Text>
+                <Text style={styles.numberDayInfoText}>
+                  {profileData.working_days}
+                </Text>
               </View>
             </View>
             <View
@@ -241,10 +273,10 @@ const styles = StyleSheet.create({
     fontFamily: "IBMPlexSans_400Regular",
   },
   personalInfo: {
-    height: 105,
-    paddingTop: 16,
     justifyContent: "flex-start",
+    rowGap: 2,
     alignItems: "center",
+    marginBottom: 12,
   },
   nameText: {
     fontSize: 24,
