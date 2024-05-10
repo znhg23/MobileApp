@@ -10,6 +10,8 @@ import {
 import { router } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { Stack, Tabs } from "expo-router";
+import axios from "axios";
+import BASE_URL from "../../env";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -103,20 +105,27 @@ const data = [
 ];
 
 const Track = () => {
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await axios
+          .get(`${BASE_URL}/manager/getAllAttendanceTrack`)
+          .then((res) => {
+            setData(res.data.message);
+            const filteredData = res.data.message.filter(
+              (item) => item.date === "2024-02-29T17:00:00.000Z"
+            );
+            setSelectedData(filteredData);
+          });
+      } catch (error) {
+        alert(error.response.data.message || "An error occurred");
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`${BASE_URL}/user/attendanceTrack`);
-  //       setData(response.data.result);
-  //     } catch (error) {
-  //       alert(error.response.data.message || "An error occurred");
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
     IBMPlexSans_400Regular,
@@ -154,11 +163,23 @@ const Track = () => {
               flexDirection: "row",
               width: "100%",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-start",
+              marginBottom: 2,
+              rowGap: 2,
             }}
           >
-            <Text style={styles.timeText}>{item.employeeName}</Text>
-            {["Late in", "Early leave"].includes(item.status) ? (
+            <Text
+              style={[
+                styles.timeText,
+                {
+                  fontFamily: "IBMPlexSans_500Medium",
+                  color: "#0E305D",
+                },
+              ]}
+            >
+              {item.name}
+            </Text>
+            {["Late", "Early leave"].includes(item.status) ? (
               <View style={[styles.status, { backgroundColor: "#FFE1DF" }]}>
                 <Text style={[styles.statusText, { color: "#ED2115" }]}>
                   {item.status}
@@ -190,7 +211,9 @@ const Track = () => {
               source={require("../../assets/icons/barcode.png")}
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
-            <Text style={styles.otherText}>{item.action}</Text>
+            <Text style={[styles.otherText, { paddingBottom: 3 }]}>
+              {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+            </Text>
           </View>
           <View
             style={{
@@ -204,12 +227,14 @@ const Track = () => {
               source={require("../../assets/icons/briefcase.png")}
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
-            <Text style={[{ flex: 1 }, styles.otherText]}>{item.position}</Text>
+            <Text style={[{ flex: 1 }, styles.otherText, { paddingBottom: 1 }]}>
+              {item.position.charAt(0).toUpperCase() + item.position.slice(1)}
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 router.push({
                   pathname: "/attendance-details/[id]",
-                  params: { id: item.index },
+                  params: { id: item.employee_ID },
                 });
               }}
             >
@@ -283,7 +308,7 @@ const Track = () => {
           </View>
         </View>
         <FlatList
-          data={data}
+          data={selectedData}
           renderItem={({ item }) => <GeneralAttendance item={item} />}
           eyExtractor={(item) => item.id.toString()}
           style={{ width: "100%", flex: 1 }}

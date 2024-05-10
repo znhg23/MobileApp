@@ -27,11 +27,11 @@ import {
 
 export default Profile = () => {
   const [profileData, setProfileData] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/user/employeeDetails`);
-        console.log(response.data);
         setProfileData(response.data.message);
       } catch (error) {
         alert(error.response.data.message || "An error occurred");
@@ -56,7 +56,12 @@ export default Profile = () => {
       </>
     );
   }
-  if (!profileData) return <ActivityIndicator size="large" color="#94A3B8" />;
+  if (!profileData)
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator size="large" color="#94A3B8" />
+      </View>
+    );
 
   const onEdit = () => {
     router.push("change-password");

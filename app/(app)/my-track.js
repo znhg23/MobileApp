@@ -106,7 +106,7 @@ import {
 
 const MyTrack = () => {
   const [data, setData] = useState([]);
-
+  const [selectedData, setSelectedData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -114,6 +114,10 @@ const MyTrack = () => {
           .get(`${BASE_URL}/user/attendanceTrack`)
           .then((res) => {
             setData(res.data.result);
+            const filteredData = res.data.result.filter(
+              (item) => item.date === "2024-02-29T17:00:00.000Z"
+            );
+            setSelectedData(filteredData);
           })
           .catch((err) => {
             console.log(err.response.data.message);
@@ -122,7 +126,6 @@ const MyTrack = () => {
         alert(error || "An error occurred");
       }
     };
-
     fetchData();
   }, []);
   let [fontsLoaded, fontError] = useFonts({
@@ -235,7 +238,6 @@ const MyTrack = () => {
       </View>
     );
   };
-
   return (
     <View
       style={{
@@ -292,7 +294,7 @@ const MyTrack = () => {
           </View>
         </View>
         <FlatList
-          data={data}
+          data={selectedData}
           renderItem={({ item }) => <GeneralAttendance item={item} />}
           eyExtractor={(item) => item.id.toString()}
           style={{ width: "100%", flex: 1 }}
