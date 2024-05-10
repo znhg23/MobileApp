@@ -287,8 +287,8 @@ const UserHome = () => {
             }}
           >
             <Text style={styles.todayText}>Today</Text>
-            <Text style={styles.timeText}>23:04:00</Text>
-            <Text style={styles.dateText}>Tuesday April 23 - 2024</Text>
+            <Text style={styles.timeText}>{currentTime}</Text>
+            <Text style={styles.dateText}>{currentDate}</Text>
           </View>
           <View style={{ flex: 1, justifyContent: "flex-end" }}>
             <Image
