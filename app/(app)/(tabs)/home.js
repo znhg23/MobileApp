@@ -1,5 +1,14 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View, ActivityIndicator, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import EventSource from "react-native-sse";
+import RNEventSource from "react-native-event-source";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -9,6 +18,8 @@ import {
   IBMPlexSans_700Bold,
 } from "@expo-google-fonts/ibm-plex-sans";
 import { Link, Stack } from "expo-router";
+import axios from "axios";
+import BASE_URL from "../../../env";
 import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../../../components/common/header/NotificationBtn";
 import MainFeature from "../../../components/common/MainFeature";
@@ -17,6 +28,76 @@ import { useAuth } from "../../../components/AuthContext";
 
 const UserHome = () => {
   const { authState } = useAuth();
+  const [datas, setDatas] = useState(1);
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+  const formatTime = (dateTime) => {
+    return dateTime.toLocaleTimeString("en-US", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };
+
+  const formatDate = (dateTime) => {
+    const options = {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    };
+    const formattedDate = dateTime.toLocaleDateString("en-US", options);
+    const parts = formattedDate.split(", ");
+    return `${parts[0]} ${parts[1].replace(",", "")} - ${parts[2]}`;
+  };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const now = new Date();
+      setCurrentDateTime(now);
+      setCurrentTime(formatTime(now));
+      setCurrentDate(formatDate(now));
+    }, 1000);
+    const fetchSse = async () => {
+      try {
+        // await axios
+        //   .get(`${BASE_URL}/sse`, {
+        //     headers: {
+        //       "Content-Type": "text/event-stream",
+        //     },
+        //   })
+        //   .then((res) => {
+        //     console.log(res);
+        //   });
+        const sse = new RNEventSource(`${BASE_URL}/sse`, {
+          headers: {
+            Authorization: `${authState.token}`,
+          },
+        });
+        sse.addEventListener("open", (event) => {
+          console.log("SSE connection opened");
+        });
+        sse.addEventListener("message", (data) => {
+          // const parsedData = JSON.parse(data.data);
+          // setData((prev) => [...prev, parsedData]);
+          // console.log("SSE data:", data);
+          console.log("SSE data:", data);
+        });
+        sse.addEventListener("error", (event) => {
+          if (event.type === "error") {
+            console.error("Connection error:", event.message);
+          } else if (event.type === "exception") {
+            console.error("Error:", event.message, event.error);
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    //fetchSse();
+    return () => clearInterval(intervalId);
+  }, []);
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
     IBMPlexSans_400Regular,
@@ -84,8 +165,8 @@ const UserHome = () => {
             }}
           >
             <Text style={styles.todayText}>Today</Text>
-            <Text style={styles.timeText}>23:04:00</Text>
-            <Text style={styles.dateText}>Tuesday April 23 - 2024</Text>
+            <Text style={styles.timeText}>{currentTime}</Text>
+            <Text style={styles.dateText}>{currentDate}</Text>
           </View>
           <View style={{ flex: 1, justifyContent: "flex-end" }}>
             <Image
@@ -136,7 +217,7 @@ const UserHome = () => {
                 feature={"Employee Registration"}
                 info={"More information"}
                 isAttendanceTrack={false}
-                dest={"/otp-request"}
+                dest={"/employee-register"}
               />
             </View>
             <View style={styles.feature}>
@@ -145,7 +226,7 @@ const UserHome = () => {
                 feature={"Feedback"}
                 info={"2 pending requests"}
                 isAttendanceTrack={false}
-                dest={"/report"}
+                dest={"/feedback"}
               />
             </View>
           </View>
@@ -167,6 +248,7 @@ const UserHome = () => {
             headerLeft: () => <ScreenHeaderBtn isTabStack={true} />,
             headerRight: () => <NotificationBtn isTabStack={true} />,
             headerTitleStyle: {
+              fontFamily: "IBMPlexSans_500Medium",
               color: "#0E305D",
               fontSize: 20,
               fontWeight: "normal",
@@ -230,7 +312,7 @@ const UserHome = () => {
                 feature={"Attendance Track"}
                 info={"More information"}
                 isAttendanceTrack={true}
-                dest={"/track"}
+                dest={"/my-track"}
               />
             </View>
             <View style={styles.feature}>
@@ -347,7 +429,7 @@ const styles = StyleSheet.create({
     color: "#0E305D",
   },
   dateText: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: "IBMPlexSans_400Regular",
     color: "#94A3B8",
   },

@@ -7,33 +7,8 @@ import DateSwiper from "../../components/common/DateSwiper";
 
 const OtpRequest = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-      }}
-    >
-      <Stack.Screen
-        options={{
-          title: "Feedback",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#94A3B8",
-          },
-          headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn />,
-          headerRight: () => <NotificationBtn />,
-          headerTitleStyle: {
-            color: "#0E305D",
-            fontSize: 20,
-            fontWeight: "normal",
-          },
-        }}
-      />
-      <DateSwiper
-      />
+    <View>
+      <Text>OTP Request</Text>
     </View>
   );
 };

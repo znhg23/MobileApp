@@ -6,16 +6,16 @@ import {
   Dimensions,
   Platform,
   ActivityIndicator,
+  TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
 import { Stack } from "expo-router";
-import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../../../components/common/header/NotificationBtn";
-import AttendanceList from "../../../components/common/AttendanceList";
-import { useEffect, useState } from "react";
+import { router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import BASE_URL from "../../../env";
-import { router } from "expo-router";
+import AttendanceList from "../../../components/common/AttendanceList";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -25,14 +25,17 @@ import {
   IBMPlexSans_700Bold,
 } from "@expo-google-fonts/ibm-plex-sans";
 
-export default Profile = () => {
+export default function EmployeeDetails() {
+  const { id } = useLocalSearchParams();
   const [profileData, setProfileData] = useState(null);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/user/employeeDetails`);
-        setProfileData(response.data.message);
+        const response = await axios.get(
+          `${BASE_URL}/manager/getEmployee?id=${id}`
+        );
+        console.log(response.data);
+        setProfileData(response.data.message[0]);
       } catch (error) {
         alert(error.response.data.message || "An error occurred");
       }
@@ -40,7 +43,6 @@ export default Profile = () => {
 
     fetchData();
   }, []);
-
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
     IBMPlexSans_400Regular,
@@ -48,6 +50,7 @@ export default Profile = () => {
     IBMPlexSans_600SemiBold,
     IBMPlexSans_700Bold,
   });
+
   if (!fontsLoaded && !fontError) {
     return (
       <>
@@ -56,15 +59,13 @@ export default Profile = () => {
       </>
     );
   }
-  if (!profileData)
-    return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="#94A3B8" />
-      </View>
-    );
+  if (!profileData) return <ActivityIndicator size="large" color="#94A3B8" />;
 
   const onEdit = () => {
-    router.push("change-password");
+    router.push({
+      pathname: "/create-face-model/[id]",
+      params: { id },
+    });
   };
 
   return (
@@ -80,14 +81,20 @@ export default Profile = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Profile",
+          title: "Employee Details",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "#0E305D",
           },
+          headerLeft: () => (
+            <TouchableWithoutFeedback onPress={() => router.back()}>
+              <Image
+                source={require("../../../assets/icons/left-white-arrow.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            </TouchableWithoutFeedback>
+          ),
           headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn mode="dark" isTabStack={true} />,
-          headerRight: () => <NotificationBtn mode="dark" isTabStack={true} />,
           headerTitleStyle: {
             fontFamily: "IBMPlexSans_500Medium",
             color: "white",
@@ -113,14 +120,12 @@ export default Profile = () => {
               <Text style={styles.workingTimeText}>13:00-17:00</Text>
             </View>
           </View>
-          <View style={styles.rightInfo}>
-            <TouchableOpacity onPress={onEdit}>
-              <Image
-                source={require("../../../assets/icons/change-password.png")}
-                style={{ width: 23, height: 22 }}
-              />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={onEdit} style={styles.rightInfo}>
+            <Image
+              source={require("../../../assets/icons/edit.png")}
+              style={{ height: 31, width: 31 }}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.personalInfo}>
           <Text style={styles.nameText}>{profileData.name}</Text>
@@ -221,7 +226,7 @@ export default Profile = () => {
       />
     </View>
   );
-};
+}
 const styles = StyleSheet.create({
   bottomContainer: {
     width: "100%",

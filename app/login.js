@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useAuth } from "../components/AuthContext";
-
 import {
   useFonts,
   IBMPlexSans_400Regular,
@@ -22,7 +21,7 @@ export default function Login() {
   const login = async () => {
     const result = await onLogin(username, password);
     if (result && result.error) {
-      alert(result.error);
+      alert(result.error.response.data.message);
     } else {
       router.replace("/home");
     }
@@ -44,6 +43,10 @@ export default function Login() {
         onChangeText={(text) => setUsername(text)}
         value={username}
         autoCapitalize="none"
+        onSubmitEditing={() => {
+          passwordInput.focus();
+        }}
+        returnKeyType="next"
       />
       <TextInput
         style={styles.input}
@@ -52,6 +55,10 @@ export default function Login() {
         value={password}
         secureTextEntry
         autoCapitalize="none"
+        returnKeyType="done"
+        ref={(input) => {
+          passwordInput = input;
+        }}
       />
       <TouchableOpacity style={styles.button} onPress={login}>
         <Text style={styles.buttonText}>Login</Text>
@@ -85,10 +92,12 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     color: "#fff",
     fontSize: 20,
     fontFamily: "IBMPlexSans_600SemiBold",
+    marginBottom: 5,
   },
 });

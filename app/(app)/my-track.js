@@ -21,109 +21,111 @@ import {
   IBMPlexSans_700Bold,
 } from "@expo-google-fonts/ibm-plex-sans";
 
-const data = [
-  {
-    index: 0,
-    time: "7:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Staff",
-    status: "On time",
-  },
-  {
-    index: 1,
-    time: "8:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Guard",
-    status: "Late in",
-  },
-  {
-    index: 2,
-    time: "9:00:00",
-    employeeName: "John Doe",
-    action: "Check-out",
-    position: "Cleaner",
-    status: "Early leave",
-  },
-  {
-    index: 3,
-    time: "10:00:00",
-    employeeName: "John Doe",
-    action: "Visit",
-    position: "Visitor",
-    status: "Other",
-  },
-  {
-    index: 4,
-    time: "11:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Staff",
-    status: "On time",
-  },
-  {
-    index: 5,
-    time: "12:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Guard",
-    status: "Late in",
-  },
-  {
-    index: 6,
-    time: "13:00:00",
-    employeeName: "John Doe",
-    action: "Check-out",
-    position: "Cleaner",
-    status: "Early leave",
-  },
-  {
-    index: 7,
-    time: "14:00:00",
-    employeeName: "John Doe",
-    action: "Visit",
-    position: "Visitor",
-    status: "Other",
-  },
-  {
-    index: 8,
-    time: "15:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Staff",
-    status: "On time",
-  },
-  {
-    index: 9,
-    time: "16:00:00",
-    employeeName: "John Doe",
-    action: "Check-in",
-    position: "Guard",
-    status: "Late in",
-  },
-];
+// const data = [
+//   {
+//     index: 0,
+//     time: "7:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Staff",
+//     status: "On time",
+//   },
+//   {
+//     index: 1,
+//     time: "8:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Guard",
+//     status: "Late in",
+//   },
+//   {
+//     index: 2,
+//     time: "9:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-out",
+//     position: "Cleaner",
+//     status: "Early leave",
+//   },
+//   {
+//     index: 3,
+//     time: "10:00:00",
+//     employeeName: "John Doe",
+//     action: "Visit",
+//     position: "Visitor",
+//     status: "Other",
+//   },
+//   {
+//     index: 4,
+//     time: "11:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Staff",
+//     status: "On time",
+//   },
+//   {
+//     index: 5,
+//     time: "12:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Guard",
+//     status: "Late in",
+//   },
+//   {
+//     index: 6,
+//     time: "13:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-out",
+//     position: "Cleaner",
+//     status: "Early leave",
+//   },
+//   {
+//     index: 7,
+//     time: "14:00:00",
+//     employeeName: "John Doe",
+//     action: "Visit",
+//     position: "Visitor",
+//     status: "Other",
+//   },
+//   {
+//     index: 8,
+//     time: "15:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Staff",
+//     status: "On time",
+//   },
+//   {
+//     index: 9,
+//     time: "16:00:00",
+//     employeeName: "John Doe",
+//     action: "Check-in",
+//     position: "Guard",
+//     status: "Late in",
+//   },
+// ];
 
-const Track = () => {
+const MyTrack = () => {
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         await axios
-          .get(`${BASE_URL}/manager/getAllAttendanceTrack`)
+          .get(`${BASE_URL}/user/attendanceTrack`)
           .then((res) => {
-            setData(res.data.message);
-            const filteredData = res.data.message.filter(
+            setData(res.data.result);
+            const filteredData = res.data.result.filter(
               (item) => item.date === "2024-02-29T17:00:00.000Z"
             );
             setSelectedData(filteredData);
+          })
+          .catch((err) => {
+            console.log(err.response.data.message);
           });
       } catch (error) {
-        alert(error.response.data.message || "An error occurred");
+        alert(error || "An error occurred");
       }
     };
-
     fetchData();
   }, []);
   let [fontsLoaded, fontError] = useFonts({
@@ -165,7 +167,6 @@ const Track = () => {
               justifyContent: "space-between",
               alignItems: "flex-start",
               marginBottom: 2,
-              rowGap: 2,
             }}
           >
             <Text
@@ -173,11 +174,12 @@ const Track = () => {
                 styles.timeText,
                 {
                   fontFamily: "IBMPlexSans_500Medium",
+                  width: "70%",
                   color: "#0E305D",
                 },
               ]}
             >
-              {item.name}
+              {item.type}
             </Text>
             {["Late", "Early leave"].includes(item.status) ? (
               <View style={[styles.status, { backgroundColor: "#FFE1DF" }]}>
@@ -208,11 +210,11 @@ const Track = () => {
             }}
           >
             <Image
-              source={require("../../assets/icons/barcode.png")}
+              source={require("../../assets/icons/info.png")}
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
             <Text style={[styles.otherText, { paddingBottom: 3 }]}>
-              {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+              {item.value}
             </Text>
           </View>
           <View
@@ -221,37 +223,21 @@ const Track = () => {
               flexDirection: "row",
               justifyContent: "flex-start",
               alignItems: "center",
+              marginBottom: 2,
             }}
           >
             <Image
-              source={require("../../assets/icons/briefcase.png")}
+              source={require("../../assets/icons/gray-location.png")}
               style={{ width: 16, height: 16, marginRight: 6 }}
             />
             <Text style={[{ flex: 1 }, styles.otherText, { paddingBottom: 1 }]}>
-              {item.position.charAt(0).toUpperCase() + item.position.slice(1)}
+              {item.location}
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                router.push({
-                  pathname: "/attendance-details/[id]",
-                  params: { id: item.employee_ID },
-                });
-              }}
-            >
-              <Image
-                source={require("../../assets/icons/more-info.png")}
-                style={{
-                  height: 18,
-                  width: 18,
-                }}
-              />
-            </TouchableOpacity>
           </View>
         </View>
       </View>
     );
   };
-
   return (
     <View
       style={{
@@ -264,7 +250,7 @@ const Track = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Attendance Track",
+          title: "My Attendance Track",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "#E5EFFF",
@@ -318,7 +304,7 @@ const Track = () => {
     </View>
   );
 };
-export default Track;
+export default MyTrack;
 const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
@@ -400,6 +386,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   status: {
+    marginTop: 3,
     height: 18,
     width: 68,
     borderRadius: 8,

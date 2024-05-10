@@ -88,7 +88,6 @@ const AttendanceList = () => {
     const [animation, setAnimation] = useState(new Animated.Value(0));
 
     const updateLayout = () => {
-      console.log("updateLayout");
       if (!opended) {
         Animated.timing(animation, {
           toValue: 1,
