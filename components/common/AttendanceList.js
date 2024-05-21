@@ -124,13 +124,11 @@ const AttendanceList = () => {
       item.checkin = item.expandContent[0].time;
       item.checkout = item.expandContent[item.expandContent.length - 1].time;
       let tempSeconds = 0;
-      console.log("date", item.date);
       item.expandContent.forEach((descItem, index) => {
         if (descItem.name === "Check In" && item.expandContent[index + 1]) {
           tempSeconds =
             tempSeconds +
             getDiff(descItem.time, item.expandContent[index + 1].time);
-          console.log(tempSeconds);
         }
       });
       const hours = Math.floor(tempSeconds / 3600);

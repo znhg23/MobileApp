@@ -234,7 +234,7 @@ const Track = () => {
               onPress={() => {
                 router.push({
                   pathname: "/attendance-details/[id]",
-                  params: { id: item.employee_ID },
+                  params: { id: item.Track_ID },
                 });
               }}
             >

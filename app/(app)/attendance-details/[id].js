@@ -8,10 +8,10 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
-import React from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
-import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
-import NotificationBtn from "../../../components/common/header/NotificationBtn";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import BASE_URL from "../../../env";
 import { router } from "expo-router";
 import {
   useFonts,
@@ -127,6 +127,36 @@ const data = [
 
 const AttendanceDetails = () => {
   const { id } = useLocalSearchParams();
+  const [attendanceData, setAttendanceData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await axios
+          .get(`${BASE_URL}/manager/getAllAttendanceTrack?track_id=${id}`)
+          .then((res) => {
+            const data = res.data.message[0];
+            // Parse and format the date
+            const date = new Date(data.date);
+            const options = {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            };
+            const formattedDate = date.toLocaleDateString("en-US", options);
+            // Update the date in the data
+            const formattedData = { ...data, date: formattedDate };
+            setAttendanceData(formattedData);
+          })
+          .catch((error) => {
+            console.log(error.response.data.message);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
@@ -144,14 +174,20 @@ const AttendanceDetails = () => {
       </>
     );
   }
-
+  if (!attendanceData) {
+    return (
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+        <ActivityIndicator size="large" color="#94A3B8" />
+      </>
+    );
+  }
   const goToProfile = (employeeID) => {
     router.push({
       pathname: "/employee-details/[id]",
       params: { id: employeeID },
     });
   };
-  const attendanceData = data[id];
   return (
     <View
       style={{
@@ -204,7 +240,7 @@ const AttendanceDetails = () => {
           />
         </View>
         <View style={styles.generalInfo}>
-          {["Late in", "Early leave"].includes(attendanceData.status) ? (
+          {["Late", "Early leave"].includes(attendanceData.status) ? (
             <View style={[styles.status, { backgroundColor: "#FFE1DF" }]}>
               <Text style={[styles.statusText, { color: "#ED2115" }]}>
                 {attendanceData.status}
@@ -254,7 +290,7 @@ const AttendanceDetails = () => {
       <View style={styles.bottomContainer}>
         <TouchableOpacity
           style={styles.infoBox}
-          onPress={() => goToProfile(attendanceData.employeeID)}
+          onPress={() => goToProfile(attendanceData.employee_ID)}
         >
           <View style={styles.iconBox}>
             <Image
@@ -265,12 +301,12 @@ const AttendanceDetails = () => {
           <Text
             style={{
               flex: 1,
-              fontSize: 20,
+              fontSize: 18,
               fontFamily: "IBMPlexSans_400Regular",
               color: "black",
             }}
           >
-            {attendanceData.employeeName}
+            {attendanceData.name}
           </Text>
           <Image
             source={require("../../../assets/icons/left-arrow.png")}
@@ -288,12 +324,13 @@ const AttendanceDetails = () => {
           <Text
             style={{
               flex: 1,
-              fontSize: 20,
+              fontSize: 18,
               fontFamily: "IBMPlexSans_400Regular",
               color: "black",
             }}
           >
-            {attendanceData.position}
+            {attendanceData.position.charAt(0).toUpperCase() +
+              attendanceData.position.slice(1)}
           </Text>
         </View>
 
@@ -307,12 +344,12 @@ const AttendanceDetails = () => {
           <Text
             style={{
               flex: 1,
-              fontSize: 20,
+              fontSize: 18,
               fontFamily: "IBMPlexSans_400Regular",
               color: "black",
             }}
           >
-            {attendanceData.action}
+            {attendanceData.type}
           </Text>
         </View>
 
@@ -326,7 +363,7 @@ const AttendanceDetails = () => {
           <Text
             style={{
               flex: 1,
-              fontSize: 20,
+              fontSize: 18,
               fontFamily: "IBMPlexSans_400Regular",
               color: "black",
             }}

@@ -220,22 +220,35 @@ const CreateFaceModel = () => {
           Clear Images
         </Text>
       </TouchableOpacity>
-      {image && (
-        <FlatList
-          contentContainerStyle={{
-            height: (Dimensions.get("window").width - 16) / 3,
-            columnGap: 8,
-          }}
-          data={image}
-          renderItem={({ item }) => (
-            <Image source={{ uri: item.uri }} style={styles.image} />
-          )}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
-      )}
-      <View style={styles.employeeInfo}></View>
-      <Button title="Upload" onPress={uploadImage} />
+      <View style={{ width: "100%", height: 160 }}>
+        {image && (
+          <FlatList
+            contentContainerStyle={{
+              height: (Dimensions.get("window").width - 16) / 3,
+              columnGap: 8,
+            }}
+            data={image}
+            renderItem={({ item }) => (
+              <Image source={{ uri: item.uri }} style={styles.image} />
+            )}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
+        )}
+      </View>
+
+      <View
+        style={{
+          width: "100%",
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity style={styles.uploadBtn} onPress={uploadImage}>
+          <Text style={styles.uploadText}>UPLOAD</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -278,11 +291,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     opacity: 0.7,
   },
-  employeeInfo: {
-    flex: 1,
-    width: "100%",
-    padding: 20,
+  uploadBtn: {
+    width: 150,
+    height: 60,
+    backgroundColor: "#0E305D",
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 5,
+  },
+  uploadText: {
+    fontFamily: "IBMPlexSans_500Medium",
+    fontSize: 20,
+    color: "white",
+    paddingBottom: 5,
   },
 });

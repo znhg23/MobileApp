@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import {
   useFonts,
@@ -70,19 +71,19 @@ const UserHome = () => {
         //   .then((res) => {
         //     console.log(res);
         //   });
-        const sse = new RNEventSource(`${BASE_URL}/sse`, {
+        const sse = new RNEventSource(`http://172.17.11.248:4002/sse`, {
           headers: {
             Authorization: `${authState.token}`,
           },
         });
-        sse.addEventListener("open", (event) => {
+        sse.addEventListener("open", () => {
           console.log("SSE connection opened");
         });
-        sse.addEventListener("message", (data) => {
+        sse.addEventListener("message", (event) => {
           // const parsedData = JSON.parse(data.data);
           // setData((prev) => [...prev, parsedData]);
           // console.log("SSE data:", data);
-          console.log("SSE data:", data);
+          console.log("New message event:", event.data);
         });
         sse.addEventListener("error", (event) => {
           if (event.type === "error") {
@@ -91,6 +92,13 @@ const UserHome = () => {
             console.error("Error:", event.message, event.error);
           }
         });
+        sse.addEventListener("close", () => {
+          console.log("Close SSE connection.");
+        });
+        return () => {
+          sse.removeAllListeners();
+          sse.close();
+        };
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -158,10 +166,10 @@ const UserHome = () => {
         <View style={styles.generalInfo}>
           <View
             style={{
-              flex: 1,
+              flex: 1.3,
               margin: 16,
               justifyContent: "space-between",
-              rowGap: 8,
+              rowGap: 4,
             }}
           >
             <Text style={styles.todayText}>Today</Text>
@@ -280,10 +288,10 @@ const UserHome = () => {
         <View style={styles.generalInfo}>
           <View
             style={{
-              flex: 1,
+              flex: 1.3,
               margin: 16,
               justifyContent: "space-between",
-              rowGap: 8,
+              rowGap: 4,
             }}
           >
             <Text style={styles.todayText}>Today</Text>
