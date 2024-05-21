@@ -238,6 +238,7 @@ const MyTrack = () => {
       </View>
     );
   };
+
   return (
     <View
       style={{
@@ -293,13 +294,35 @@ const MyTrack = () => {
             </View>
           </View>
         </View>
-        <FlatList
-          data={selectedData}
-          renderItem={({ item }) => <GeneralAttendance item={item} />}
-          eyExtractor={(item) => item.id.toString()}
-          style={{ width: "100%", flex: 1 }}
-          showsVerticalScrollIndicator={false}
-        />
+        {selectedData.length === 0 ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "white",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "IBMPlexSans_400Regular",
+                fontSize: 18,
+                color: "#94A3B8",
+                textAlign: "center",
+              }}
+            >
+              No attendance data in this month
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={selectedData}
+            renderItem={({ item }) => <GeneralAttendance item={item} />}
+            eyExtractor={(item) => item.id.toString()}
+            style={{ width: "100%", flex: 1 }}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </View>
     </View>
   );

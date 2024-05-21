@@ -7,6 +7,7 @@ import {
   Platform,
   ActivityIndicator,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { Stack } from "expo-router";
 import ScreenHeaderBtn from "../../../components/common/header/ScreenHeaderBtn";
@@ -27,12 +28,29 @@ import {
 
 export default Profile = () => {
   const [profileData, setProfileData] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
 
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const shiftHandle = (shift) => {
+    const morning =
+      shift[0].begin_at.slice(0, 5) + "-" + shift[0].end_at.slice(0, 5);
+    const afternoon =
+      shift[1].begin_at.slice(0, 5) + "-" + shift[1].end_at.slice(0, 5);
+    return [morning, afternoon];
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/user/employeeDetails`);
-        setProfileData(response.data.message);
+        const response = await axios
+          .get(`${BASE_URL}/user/employeeDetails`)
+          .then((res) => {
+            myData = res.data.message;
+            myData.shift = shiftHandle(myData.shift);
+            setProfileData(myData);
+          });
       } catch (error) {
         alert(error.response.data.message || "An error occurred");
       }
@@ -107,10 +125,10 @@ export default Profile = () => {
         >
           <View style={styles.leftInfo}>
             <View style={styles.workingTime}>
-              <Text style={styles.workingTimeText}>07:00-11:00</Text>
+              <Text style={styles.workingTimeText}>{profileData.shift[0]}</Text>
             </View>
             <View style={styles.workingTime}>
-              <Text style={styles.workingTimeText}>13:00-17:00</Text>
+              <Text style={styles.workingTimeText}>{profileData.shift[1]}</Text>
             </View>
           </View>
           <View style={styles.rightInfo}>
@@ -178,7 +196,9 @@ export default Profile = () => {
                 }}
               >
                 <Text style={styles.dayInfoText}>Absence days</Text>
-                <Text style={styles.numberDayInfoText}>2</Text>
+                <Text style={styles.numberDayInfoText}>
+                  {profileData.absent_days}
+                </Text>
               </View>
             </View>
           </View>
@@ -214,7 +234,6 @@ export default Profile = () => {
         </View>
         <AttendanceList />
       </View>
-
       <Image
         source={require("../../../assets/icons/avatar.png")}
         style={styles.avatar}
