@@ -17,7 +17,7 @@ import {
   IBMPlexSans_600SemiBold,
   IBMPlexSans_700Bold,
 } from "@expo-google-fonts/ibm-plex-sans";
-const SuccessModal = ({ visible, closeModal }) => {
+const SuccessModal = ({ visible, closeModal, context }) => {
   let [fontsLoaded, fontError] = useFonts({
     IBMPlexSans_300Light,
     IBMPlexSans_400Regular,
@@ -46,9 +46,13 @@ const SuccessModal = ({ visible, closeModal }) => {
             source={require("../../assets/images/success.png")}
             style={{ width: 100, height: 100 }}
           />
-          <Text style={styles.modalText}>Password Changed!</Text>
+          <Text style={styles.modalText}>
+            {context === "password" ? "Password Changed!" : "Images Uploaded"}
+          </Text>
           <Text style={styles.infoText}>
-            Your password has been changed succesfully
+            {context === "password"
+              ? "Your password has been changed succesfully"
+              : "Employee face model has been updated successfully."}
           </Text>
           <TouchableOpacity
             onPress={() => {

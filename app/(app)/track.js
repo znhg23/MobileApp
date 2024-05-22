@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { router } from "expo-router";
+import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
 import React, { useState, useEffect } from "react";
 import { Stack, Tabs } from "expo-router";
 import axios from "axios";
@@ -20,7 +21,6 @@ import {
   IBMPlexSans_600SemiBold,
   IBMPlexSans_700Bold,
 } from "@expo-google-fonts/ibm-plex-sans";
-
 const data = [
   {
     index: 0,
@@ -106,6 +106,7 @@ const data = [
 
 const Track = () => {
   const [data, setData] = useState([]);
+  const [date, setDate] = useState(new Date());
   const [selectedData, setSelectedData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -114,6 +115,9 @@ const Track = () => {
           .get(`${BASE_URL}/manager/getAllAttendanceTrack`)
           .then((res) => {
             setData(res.data.message);
+            let tempDate = new Date();
+            //tempDate = tempDate.toLocaleDateString();
+            console.log(tempDate);
             const filteredData = res.data.message.filter(
               (item) => item.date === "2024-02-29T17:00:00.000Z"
             );
@@ -142,6 +146,12 @@ const Track = () => {
       </>
     );
   }
+  const handleChange = (date) => {
+    setDate(date);
+    //const formattedDate = getFormatedDate(date);
+    const filteredData = data.filter((item) => item.date === date);
+    setSelectedData(filteredData);
+  };
 
   const GeneralAttendance = ({ item }) => {
     return (
@@ -279,7 +289,13 @@ const Track = () => {
         }}
       />
 
-      <View style={styles.topContainer}></View>
+      <View style={styles.topContainer}>
+        {/* <DatePicker
+          mode="calendar"
+          selected={date}
+          onDateChange={handleChange}
+        /> */}
+      </View>
       <View style={styles.bottomContainer}>
         <View style={styles.generalContainer}>
           <Text style={styles.generalText}>General</Text>

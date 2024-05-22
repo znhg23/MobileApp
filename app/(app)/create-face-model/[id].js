@@ -12,13 +12,12 @@ import {
   KeyboardAvoidingView,
   FlatList,
 } from "react-native";
-
 import React, { useState, useEffect } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import BASE_URL from "../../../env";
-
+import SuccessModal from "../../../components/common/SuccessModal";
 import {
   useFonts,
   IBMPlexSans_300Light,
@@ -30,6 +29,8 @@ import {
 
 const CreateFaceModel = () => {
   const [image, setImage] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
   const { id } = useLocalSearchParams();
 
   useEffect(() => {
@@ -81,6 +82,10 @@ const CreateFaceModel = () => {
       </>
     );
   }
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -149,7 +154,7 @@ const CreateFaceModel = () => {
         .catch((error) => {
           alert(error.response.data.message || "An error occurred");
         });
-
+      setShowModal(true);
       console.log("Upload successful:", response);
       // Handle response or update UI as needed
     } catch (error) {
@@ -249,6 +254,11 @@ const CreateFaceModel = () => {
           <Text style={styles.uploadText}>UPLOAD</Text>
         </TouchableOpacity>
       </View>
+      <SuccessModal
+        visible={showModal}
+        closeModal={handleCloseModal}
+        context={"faceModel"}
+      />
     </View>
   );
 };
