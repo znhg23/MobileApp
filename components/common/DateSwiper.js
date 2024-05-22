@@ -40,7 +40,7 @@ export default function Example() {
 
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 0 }}>
       <View style={styles.container}>
         <View style={styles.dateContainer}>
           <Image source={require("../../assets/icons/calendar.png")} style={{width: 30, height: 30, marginRight: 10, marginBottom: 12}}/>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     paddingHorizontal: 24,
     maxHeight: 200,
-    backgroundColor: '#94A3B8',
+    backgroundColor: '#E5EFFF',
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
