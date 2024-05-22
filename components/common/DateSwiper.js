@@ -39,7 +39,7 @@ export default function Example() {
   const formattedDate = moment(currentDate).format("DD MMM, YYYY");
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 0 }}>
       <View style={styles.container}>
         <View style={styles.dateContainer}>
           <Image

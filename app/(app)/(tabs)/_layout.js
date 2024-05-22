@@ -10,12 +10,12 @@ import {
 
 export default function TabLayout() {
   const { authState } = useAuth();
-  let [fontsLoaded, fontError] = useFonts({
-    IBMPlexSans_500Medium,
-  });
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
+  // let [fontsLoaded, fontError] = useFonts({
+  //   IBMPlexSans_500Medium,
+  // });
+  // if (!fontsLoaded && !fontError) {
+  //   return null;
+  // }
   return (
     <Tabs>
       <Tabs.Screen

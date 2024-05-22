@@ -1,6 +1,7 @@
 import { 
   StyleSheet,
   SafeAreaView,
+  ScrollView,
   View,
   TouchableWithoutFeedback,
   Text,
@@ -11,20 +12,18 @@ import {
  } from "react-native";
 import React, { useState, useRef } from "react";
 import { Stack } from "expo-router";
+import Footer from "../../components/common/Footer";
 import moment from 'moment';
 import { Color, FontFamily, Border, FontSize } from "../../constants/GlobalStyles";
 import ScreenHeaderBtn from "../../components/common/header/ScreenHeaderBtn";
 import NotificationBtn from "../../components/common/header/NotificationBtn";
 import DateSwiper from "../../components/common/DateSwiper";
-import DatePicker from "react-native-modern-datepicker"; 
+import DatePicker, { getFormatedDate } from "react-native-modern-datepicker"; 
 
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const onChange = (e, selectedDate) => {
-    setDate(selectedDate);
-  };
+  const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
 
   function handleOnPress () {
     setOpen(!open);
@@ -33,10 +32,16 @@ const Dashboard = () => {
   function handleChange (propDate) {
     setDate(propDate);
   }
+  let currentDate = new moment(date, 'YYYY/MM/DD');
+  let previousDate = new moment(moment(date, 'YYYY/MM/DDt').subtract(6, 'day'));
 
-  let currentDate = moment(date).format('YYYY/MM/DD');
-  let previousDate = new Date(date);
-  previousDate.setDate(date.getDate() - 7);
+  let dateArray = [];
+  let sevenDaysAgo = new moment(previousDate);
+
+  while (sevenDaysAgo.isBefore(moment(currentDate).add(1, 'day'))) {
+    dateArray.push(sevenDaysAgo.date());
+    sevenDaysAgo = new moment(sevenDaysAgo).add(1, 'day');
+  }
   return (
     <View
       style={{
@@ -54,8 +59,6 @@ const Dashboard = () => {
             backgroundColor: "white",
           },
           headerShadowVisible: false,
-          headerLeft: () => <ScreenHeaderBtn />,
-          headerRight: () => <NotificationBtn />,
           headerTitleStyle: {
             color: "#0E305D",
             fontSize: 20,
@@ -69,7 +72,7 @@ const Dashboard = () => {
         is24Hour={true}
         onChange={onChange}
       /> */}
-      <SafeAreaView style={{flex: 1}}>
+      <ScrollView contentContainerStyle={{flex: 0}}>
         <View style={styles.dateContainer}>
           <TouchableOpacity onPress={handleOnPress}>
             <Image source={require("../../assets/icons/calendar.png")} style={{width: 20, height: 20, marginRight: 10, marginBottom: 12}}/>
@@ -83,7 +86,6 @@ const Dashboard = () => {
               <View style={styles.modalView}>
                 <DatePicker
                   mode="calendar"
-                  minimumDate={currentDate}
                   selected={date}
                   onDateChange={handleChange}
                 />
@@ -95,7 +97,7 @@ const Dashboard = () => {
             </View>
           </Modal>
           <Text style={styles.title}>
-            {moment(previousDate).format('DD MMM YYYY')} - {moment(date).format('DD MMM YYYY')}
+            {moment(previousDate).format('DD MMM YYYY')} - {moment(currentDate).format('DD MMM YYYY')}
           </Text>
         </View>
         <View style={styles.statisticsContainer}>
@@ -112,15 +114,37 @@ const Dashboard = () => {
             </View>
           </View>
           <View style={styles.dateText}>
-              <Text style={styles.statTextHour}>15</Text>
-              <Text style={styles.statTextHour}>16</Text>
-              <Text style={styles.statTextHour}>17</Text>
-              <Text style={styles.statTextHour}>18</Text>
-              <Text style={styles.statTextHour}>19</Text>
-              <Text style={styles.statTextHour}>20</Text>
+            {dateArray.map((day, index) => (
+                <Text key={index} style={styles.statTextHour}>{day}</Text>
+            ))}
           </View>
         </View>
-      </SafeAreaView>
+        <View style={styles.dashboardInfoRow}>
+            <View style={styles.info}>
+              <Text style={styles.infoDesc}>Check-in Time</Text>
+              <Text style={styles.infoDesc}>(Average)</Text>
+              <Text style={styles.infoText}>07:00</Text>
+            </View>
+            <View style={styles.info}>
+              <Text style={styles.infoDesc}>Check-out Time</Text>
+              <Text style={styles.infoDesc}>(Average)</Text>
+              <Text style={styles.infoText}>17:00</Text>
+            </View>
+        </View>
+        <View style={styles.dashboardInfoRow2}>
+            <View style={styles.info}>
+              <Text style={styles.infoDesc}>Total Late-Ins</Text>
+              <Text style={styles.infoDesc}>(Instance)</Text>
+              <Text style={styles.infoText}>10</Text>
+            </View>
+            <View style={styles.info}>
+              <Text style={styles.infoDesc}>Total Absence</Text>
+              <Text style={styles.infoDesc}>(Instance)</Text>
+              <Text style={styles.infoText}>12</Text>
+            </View>
+        </View>
+      </ScrollView>
+      <Footer/>
     </View>
   );
 };
@@ -129,8 +153,8 @@ export default Dashboard;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingVertical: 24,
+    flex: 0,
+    paddingVertical: 0,
     paddingHorizontal: 24,
   },
   centeredView: {
@@ -139,6 +163,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
     backgroundColor: "#0E305D"
+  },
+  dashboardInfoRow: {
+    flex: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  dashboardInfoRow2: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 30,
+  },
+  info: {
+    marginTop: 25,
+    flex: 1,
+    borderRadius: 20,
+    backgroundColor: '#EAF2FF',
+    marginHorizontal: 10,
+    paddingTop: 10,
+  },
+  infoDesc: {
+    flex: 0,
+    justifyContent: 'center',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  infoText: {
+    flex: 1,
+    justifyContent: 'center',
+    fontWeight: 'bold',
+    fontSize: 43,
+    textAlign: 'center',
+    marginTop: 10,
   },
   modalView: {
     margin: 20,
@@ -167,7 +223,7 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     marginRight: 100,
-    paddingVertical: 50,
+    paddingVertical: 10,
     justifyContent: 'flex-start',
     flexDirection: 'row', // Arrange components horizontally
     alignItems: 'center', // Align items vertically
