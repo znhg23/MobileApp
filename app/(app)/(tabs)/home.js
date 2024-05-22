@@ -44,7 +44,7 @@ const UserHome = () => {
 
   const formatDate = (dateTime) => {
     const options = {
-      weekday: "long",
+      weekday: "short",
       month: "long",
       day: "numeric",
       year: "numeric",

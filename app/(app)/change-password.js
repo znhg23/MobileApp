@@ -72,6 +72,7 @@ const ChangePassword = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
   return (
     <View
       style={{
@@ -164,7 +165,11 @@ const ChangePassword = () => {
           </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-      <SuccessModal visible={showModal} closeModal={handleCloseModal} />
+      <SuccessModal
+        visible={showModal}
+        closeModal={handleCloseModal}
+        context={"password"}
+      />
     </View>
   );
 };
